@@ -4,6 +4,7 @@ import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { Sun, Moon, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
+import posthog from "posthog-js";
 
 const themes = ["light", "dark", "retro"] as const;
 
@@ -45,9 +46,19 @@ export function ThemeToggle() {
 
   const Icon = themeIcons[currentTheme];
 
+  const handleThemeChange = () => {
+    // Track theme change
+    posthog.capture("theme_changed", {
+      from_theme: currentTheme,
+      to_theme: nextTheme,
+    });
+
+    setTheme(nextTheme);
+  };
+
   return (
     <button
-      onClick={() => setTheme(nextTheme)}
+      onClick={handleThemeChange}
       className={cn(
         "p-2 rounded-lg transition-all duration-200",
         "bg-muted hover:bg-primary/20",

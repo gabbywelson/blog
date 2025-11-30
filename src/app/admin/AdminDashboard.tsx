@@ -16,6 +16,7 @@ import {
   Loader2,
   CheckCircle,
 } from "lucide-react";
+import posthog from "posthog-js";
 
 interface Blob {
   url: string;
@@ -46,14 +47,39 @@ export function AdminDashboard({ initialBlobs }: AdminDashboardProps) {
         const result = await uploadFile(formData);
 
         if (result.error) {
+          // Track upload failure
+          posthog.capture("image_upload_failed", {
+            error: result.error,
+            fileName: file.name,
+            fileSize: file.size,
+            fileType: file.type,
+          });
+
           toast.error("Upload failed", {
             description: result.error,
           });
         } else if (result.blob) {
+          // Track successful upload
+          posthog.capture("image_uploaded", {
+            fileName: file.name,
+            fileSize: file.size,
+            fileType: file.type,
+            url: result.blob.url,
+          });
+
           setBlobs((prev) => [result.blob, ...prev]);
           toast.success(`Uploaded ${file.name}`);
         }
       } catch (error) {
+        // Track unexpected errors
+        posthog.captureException(error as Error);
+        posthog.capture("image_upload_failed", {
+          error: "Unexpected error",
+          fileName: file.name,
+          fileSize: file.size,
+          fileType: file.type,
+        });
+
         toast.error("Upload failed", {
           description: "An unexpected error occurred. Please try again.",
         });
@@ -94,6 +120,13 @@ export function AdminDashboard({ initialBlobs }: AdminDashboardProps) {
     const altText = pathname.replace(/\.[^/.]+$/, "").replace(/-/g, " ");
     const markdown = `![${altText}](${url})`;
     navigator.clipboard.writeText(markdown);
+
+    // Track markdown copy event
+    posthog.capture("image_markdown_copied", {
+      pathname: pathname,
+      url: url,
+    });
+
     toast.success("Copied to clipboard!", {
       description: markdown.substring(0, 50) + "...",
     });
@@ -106,14 +139,28 @@ export function AdminDashboard({ initialBlobs }: AdminDashboardProps) {
       const result = await deleteFile(url);
 
       if (result.error) {
+        // Track delete failure
+        posthog.capture("image_delete_failed", {
+          error: result.error,
+          url: url,
+        });
+
         toast.error("Delete failed", {
           description: result.error,
         });
       } else {
+        // Track successful delete
+        posthog.capture("image_deleted", {
+          url: url,
+        });
+
         setBlobs((prev) => prev.filter((b) => b.url !== url));
         toast.success("Image deleted");
       }
     } catch (error) {
+      // Track unexpected errors
+      posthog.captureException(error as Error);
+
       toast.error("Delete failed", {
         description: "An unexpected error occurred. Please try again.",
       });

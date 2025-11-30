@@ -6,6 +6,7 @@ import { useTheme } from "next-themes";
 import { ThemeToggle } from "./ThemeToggle";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
+import posthog from "posthog-js";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -74,6 +75,15 @@ export function NavBar() {
             <Link
               key={link.href}
               href={link.href}
+              onClick={() => {
+                // Track navigation click
+                posthog.capture("navigation_clicked", {
+                  link_label: label,
+                  link_href: link.href,
+                  from_page: pathname,
+                  is_active: isActive,
+                });
+              }}
               className={cn(
                 "px-4 py-2 rounded-full text-sm font-medium transition-all duration-200",
                 isActive

@@ -4,6 +4,7 @@ import { getAllPosts, getAllTags } from "@/lib/mdx";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { Calendar, Tag, X } from "lucide-react";
+import { TagFilter } from "@/components/TagFilter";
 
 export const metadata = {
   title: "Posts | Digital Garden",
@@ -50,18 +51,12 @@ export default async function PostsPage({ searchParams }: PostsPageProps) {
             All
           </Link>
           {allTags.map(({ tag, count }) => (
-            <Link
+            <TagFilter
               key={tag}
-              href={`/posts?tag=${encodeURIComponent(tag)}`}
-              className={cn(
-                "px-3 py-1.5 rounded-full text-sm font-medium transition-colors",
-                activeTag === tag
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-muted text-muted-foreground hover:bg-muted/80"
-              )}
-            >
-              {tag} ({count})
-            </Link>
+              tag={tag}
+              count={count}
+              isActive={activeTag === tag}
+            />
           ))}
         </div>
 

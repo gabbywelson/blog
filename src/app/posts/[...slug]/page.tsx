@@ -8,6 +8,7 @@ import { format } from "date-fns";
 import { ArrowLeft, Calendar, Tag } from "lucide-react";
 import { components } from "@/components/MDXComponents";
 import { mdxOptions } from "@/lib/mdx-options";
+import { getPostHogClient } from "@/lib/posthog-server";
 
 interface PostPageProps {
   params: Promise<{ slug: string[] }>;
@@ -41,6 +42,20 @@ export default async function PostPage({ params }: PostPageProps) {
   if (!post) {
     notFound();
   }
+
+  // Track post view on server-side
+  const posthog = getPostHogClient();
+  posthog.capture({
+    distinctId: "anonymous",
+    event: "post_viewed",
+    properties: {
+      post_slug: slugPath,
+      post_title: post.title,
+      post_tags: post.tags,
+      post_date: post.date,
+    },
+  });
+  await posthog.shutdown();
 
   return (
     <article className="max-w-3xl mx-auto px-6 py-12">

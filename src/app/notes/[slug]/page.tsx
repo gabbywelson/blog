@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { ArrowLeft } from "lucide-react";
 import { components } from "@/components/MDXComponents";
 import { mdxOptions } from "@/lib/mdx-options";
+import { getPostHogClient } from "@/lib/posthog-server";
 
 interface NotePageProps {
   params: Promise<{ slug: string }>;
@@ -37,6 +38,18 @@ export default async function NotePage({ params }: NotePageProps) {
   if (!note) {
     notFound();
   }
+
+  // Track note view on server-side
+  const posthog = getPostHogClient();
+  posthog.capture({
+    distinctId: "anonymous",
+    event: "note_viewed",
+    properties: {
+      note_slug: slug,
+      note_title: note.title,
+    },
+  });
+  await posthog.shutdown();
 
   return (
     <article className="max-w-3xl mx-auto px-6 py-12">

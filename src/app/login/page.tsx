@@ -5,6 +5,7 @@ import { login } from "@/app/actions/auth";
 import { cn } from "@/lib/utils";
 import { Lock, Eye, EyeOff, Loader2 } from "lucide-react";
 import { toast, Toaster } from "sonner";
+import posthog from "posthog-js";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -17,13 +18,27 @@ export default function LoginPage() {
       const result = await login(formData);
 
       if (result?.error) {
+        // Track failed login attempt on client side
+        posthog.capture("admin_login_failed", {
+          error: result.error,
+          source: "client",
+        });
+
         toast.error("Authentication failed", {
           description: result.error,
         });
         setIsLoading(false);
+      } else {
+        // Identify admin user on successful login
+        posthog.identify("admin", {
+          role: "admin",
+        });
       }
       // If successful, redirect happens server-side
     } catch (error) {
+      // Track unexpected errors
+      posthog.captureException(error as Error);
+
       toast.error("Something went wrong", {
         description: "Please try again later.",
       });
