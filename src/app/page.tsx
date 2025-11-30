@@ -1,8 +1,15 @@
 import Link from "next/link";
-import { getAllPosts, getLatestNowEntry, extractBulletPoints } from "@/lib/mdx";
+import { getAllPosts, getAllTags, getLatestNowEntry, extractBulletPoints } from "@/lib/mdx";
 import { cn } from "@/lib/utils";
 import { ArrowRight, Sparkles, BookOpen, User } from "lucide-react";
 import { format } from "date-fns";
+
+// Colors for tag buttons
+const tagColors = [
+  "hover:border-secondary/30 hover:bg-secondary/5",
+  "hover:border-accent/30 hover:bg-accent/5",
+  "hover:border-primary/30 hover:bg-primary/5",
+];
 
 // Bullet colors for the Now section
 const bulletColors = [
@@ -15,6 +22,7 @@ const bulletColors = [
 export default function HomePage() {
   const posts = getAllPosts();
   const latestPost = posts[0];
+  const tags = getAllTags().slice(0, 6); // Get top 6 tags
 
   // Get latest now entry and extract bullet points
   const latestNowEntry = getLatestNowEntry();
@@ -210,26 +218,20 @@ export default function HomePage() {
               >
                 All Posts
               </Link>
-              <Link
-                href="/posts?tag=thoughts"
-                className={cn(
-                  "px-4 py-2 rounded-lg font-medium",
-                  "bg-card border border-border",
-                  "hover:border-secondary/30 hover:bg-secondary/5 transition-all"
-                )}
-              >
-                Thoughts
-              </Link>
-              <Link
-                href="/posts?tag=code"
-                className={cn(
-                  "px-4 py-2 rounded-lg font-medium",
-                  "bg-card border border-border",
-                  "hover:border-accent/30 hover:bg-accent/5 transition-all"
-                )}
-              >
-                Code
-              </Link>
+              {tags.map(({ tag }, index) => (
+                <Link
+                  key={tag}
+                  href={`/posts?tag=${encodeURIComponent(tag)}`}
+                  className={cn(
+                    "px-4 py-2 rounded-lg font-medium",
+                    "bg-card border border-border",
+                    "transition-all",
+                    tagColors[index % tagColors.length]
+                  )}
+                >
+                  {tag}
+                </Link>
+              ))}
             </div>
           </div>
         </div>

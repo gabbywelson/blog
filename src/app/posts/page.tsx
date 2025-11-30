@@ -1,37 +1,106 @@
 import Link from "next/link";
 import Image from "next/image";
-import { getAllPosts } from "@/lib/mdx";
+import { getAllPosts, getAllTags } from "@/lib/mdx";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
-import { Calendar, Tag } from "lucide-react";
+import { Calendar, Tag, X } from "lucide-react";
 
 export const metadata = {
   title: "Posts | Digital Garden",
   description: "All posts from the digital garden",
 };
 
-export default function PostsPage() {
-  const posts = getAllPosts();
+interface PostsPageProps {
+  searchParams: Promise<{ tag?: string }>;
+}
+
+export default async function PostsPage({ searchParams }: PostsPageProps) {
+  const { tag: activeTag } = await searchParams;
+  const allPosts = getAllPosts();
+  const allTags = getAllTags();
+
+  // Filter posts by tag if one is selected
+  const posts = activeTag
+    ? allPosts.filter((post) => post.tags.includes(activeTag))
+    : allPosts;
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-12">
       {/* Header */}
       <header className="mb-12">
         <h1 className="font-serif text-4xl md:text-5xl font-bold mb-4">
-          Posts
+          {activeTag ? `Posts tagged "${activeTag}"` : "Posts"}
         </h1>
         <p className="text-xl text-muted-foreground">
           Thoughts, explorations, and notes from the garden. Some are seedlings,
           others are well-tended evergreens.
         </p>
+
+        {/* Tag Filter */}
+        <div className="mt-6 flex flex-wrap items-center gap-2">
+          <Link
+            href="/posts"
+            className={cn(
+              "px-3 py-1.5 rounded-full text-sm font-medium transition-colors",
+              !activeTag
+                ? "bg-primary text-primary-foreground"
+                : "bg-muted text-muted-foreground hover:bg-muted/80"
+            )}
+          >
+            All
+          </Link>
+          {allTags.map(({ tag, count }) => (
+            <Link
+              key={tag}
+              href={`/posts?tag=${encodeURIComponent(tag)}`}
+              className={cn(
+                "px-3 py-1.5 rounded-full text-sm font-medium transition-colors",
+                activeTag === tag
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-muted text-muted-foreground hover:bg-muted/80"
+              )}
+            >
+              {tag} ({count})
+            </Link>
+          ))}
+        </div>
+
+        {/* Active filter indicator */}
+        {activeTag && (
+          <div className="mt-4 flex items-center gap-2">
+            <span className="text-sm text-muted-foreground">
+              Showing {posts.length} post{posts.length !== 1 ? "s" : ""} with tag:
+            </span>
+            <Link
+              href="/posts"
+              className={cn(
+                "inline-flex items-center gap-1 px-2 py-1 rounded-full text-sm",
+                "bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
+              )}
+            >
+              {activeTag}
+              <X className="w-3 h-3" />
+            </Link>
+          </div>
+        )}
       </header>
 
       {/* Posts List */}
       {posts.length === 0 ? (
         <div className="text-center py-16">
           <p className="text-muted-foreground text-lg">
-            No posts yet. The garden is still being planted.
+            {activeTag
+              ? `No posts found with tag "${activeTag}".`
+              : "No posts yet. The garden is still being planted."}
           </p>
+          {activeTag && (
+            <Link
+              href="/posts"
+              className="mt-4 inline-block text-primary hover:underline"
+            >
+              View all posts
+            </Link>
+          )}
         </div>
       ) : (
         <div className="space-y-8">
@@ -80,11 +149,16 @@ export default function PostsPage() {
                     {post.tags.length > 0 && (
                       <div className="flex items-center gap-2">
                         <Tag className="w-4 h-4" />
-                        <div className="flex gap-2">
+                        <div className="flex flex-wrap gap-2">
                           {post.tags.map((tag) => (
                             <span
                               key={tag}
-                              className="px-2 py-0.5 rounded-full bg-muted text-muted-foreground"
+                              className={cn(
+                                "px-2 py-0.5 rounded-full",
+                                activeTag === tag
+                                  ? "bg-primary/20 text-primary"
+                                  : "bg-muted text-muted-foreground"
+                              )}
                             >
                               {tag}
                             </span>
@@ -102,4 +176,3 @@ export default function PostsPage() {
     </div>
   );
 }
-

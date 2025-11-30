@@ -70,6 +70,24 @@ export function getAllPosts(): PostMeta[] {
   });
 }
 
+/**
+ * Get all unique tags from posts with their counts, sorted by count descending
+ */
+export function getAllTags(): { tag: string; count: number }[] {
+  const posts = getAllPosts();
+  const tagCounts: Record<string, number> = {};
+
+  for (const post of posts) {
+    for (const tag of post.tags) {
+      tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+    }
+  }
+
+  return Object.entries(tagCounts)
+    .map(([tag, count]) => ({ tag, count }))
+    .sort((a, b) => b.count - a.count);
+}
+
 export function getPostBySlug(slug: string): Post | null {
   // Handle both single segment and multi-segment slugs
   const fullPath = path.join(postsDirectory, `${slug}.mdx`);
