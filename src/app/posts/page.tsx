@@ -69,7 +69,8 @@ export default async function PostsPage({ searchParams }: PostsPageProps) {
         {activeTag && (
           <div className="mt-4 flex items-center gap-2">
             <span className="text-sm text-muted-foreground">
-              Showing {posts.length} post{posts.length !== 1 ? "s" : ""} with tag:
+              Showing {posts.length} post{posts.length !== 1 ? "s" : ""} with
+              tag:
             </span>
             <Link
               href="/posts"

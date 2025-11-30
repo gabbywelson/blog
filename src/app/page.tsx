@@ -1,5 +1,10 @@
 import Link from "next/link";
-import { getAllPosts, getAllTags, getLatestNowEntry, extractBulletPoints } from "@/lib/mdx";
+import {
+  getAllPosts,
+  getAllTags,
+  getLatestNowEntry,
+  extractBulletPoints,
+} from "@/lib/mdx";
 import { cn } from "@/lib/utils";
 import { ArrowRight, Sparkles, BookOpen, User } from "lucide-react";
 import { format } from "date-fns";
