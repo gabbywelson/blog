@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { getPageBySlug, getAllPageSlugs } from "@/lib/mdx";
 import { cn } from "@/lib/utils";
+import { components } from "@/components/MDXComponents";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -67,7 +68,7 @@ export default async function Page({ params }: PageProps) {
           "prose-img:rounded-lg"
         )}
       >
-        <MDXRemote source={page.content} />
+        <MDXRemote source={page.content} components={components} />
       </div>
     </article>
   );
