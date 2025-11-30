@@ -23,7 +23,7 @@ export function CursorSparkles() {
   const sparklesRef = useRef<Sparkle[]>([]);
   const idCounterRef = useRef(0);
   const lastSparkleTimeRef = useRef(0);
-  const animationFrameRef = useRef<number>();
+  const animationFrameRef = useRef<number | null>(null);
 
   const createSparkle = useCallback((x: number, y: number): Sparkle => {
     return {
@@ -105,7 +105,7 @@ export function CursorSparkles() {
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
-      if (animationFrameRef.current) {
+      if (animationFrameRef.current !== null) {
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
