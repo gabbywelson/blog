@@ -43,21 +43,29 @@
 }
 
 [data-theme="retro"] {
-  /* RETRO MODE: High Contrast, Brutalist, Playful */
-  --background: #fffff0;
-  --foreground: #000000;
-  --primary: #ff6b6b;
-  --primary-foreground: #000000;
-  --secondary: #4ecdc4;
+  /* RETRO MODE: 90s GeoCities / MySpace / Neopets Aesthetic */
+  --background: #000080; /* Classic navy blue like old web pages */
+  --foreground: #ffff00; /* Bright yellow text */
+  --primary: #ff00ff; /* Hot pink / magenta */
+  --primary-foreground: #ffffff;
+  --secondary: #00ff00; /* Lime green */
   --secondary-foreground: #000000;
-  --accent: #ffe66d;
+  --accent: #00ffff; /* Cyan / electric blue */
   --accent-foreground: #000000;
-  --muted: #eeeeee;
-  --muted-foreground: #333333;
-  --card: #ffffff;
-  --card-foreground: #000000;
-  --border: #000000;
-  --radius: 0.5rem;
+  --muted: #000066;
+  --muted-foreground: #cccccc;
+  --card: #000033;
+  --card-foreground: #ffffff;
+  --border: #ff00ff;
+  --radius: 0;
+
+  /* Retro-specific variables */
+  --retro-yellow: #ffff00;
+  --retro-pink: #ff00ff;
+  --retro-green: #00ff00;
+  --retro-cyan: #00ffff;
+  --retro-orange: #ff6600;
+  --retro-purple: #9900ff;
 }
 
 /* Expose CSS variables to Tailwind v4 */
@@ -79,6 +87,8 @@
   --font-serif: var(--font-fraunces), ui-serif, Georgia, serif;
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+  --font-retro: var(--font-comic-neue), "Comic Sans MS", cursive;
+  --font-retro-display: var(--font-bungee), Impact, "Arial Black", sans-serif;
 
   --radius-sm: calc(var(--radius) - 0.75rem);
   --radius-md: calc(var(--radius) - 0.5rem);
@@ -98,14 +108,91 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Retro mode special styles */
+/* Retro mode special styles - 3D Beveled Borders */
 [data-theme="retro"] * {
-  border-width: 2px;
+  border-width: 3px;
 }
 
 [data-theme="retro"] button,
 [data-theme="retro"] a {
   font-weight: 700;
+}
+
+/* 3D beveled card style */
+[data-theme="retro"] .bg-card {
+  background: linear-gradient(135deg, #000066 0%, #000033 100%);
+  border-style: outset;
+  border-color: #00ffff #000066 #000066 #00ffff;
+  box-shadow: 4px 4px 0px #000000, inset 1px 1px 0px rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="retro"] .bg-card:hover {
+  border-style: inset;
+  border-color: #000066 #00ffff #00ffff #000066;
+  box-shadow: 2px 2px 0px #000000, inset 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* 3D buttons */
+[data-theme="retro"] .bg-primary {
+  background: linear-gradient(180deg, #ff66ff 0%, #ff00ff 50%, #cc00cc 100%);
+  border-style: outset;
+  border-color: #ff99ff #990099 #990099 #ff99ff;
+  box-shadow: 3px 3px 0px #000000;
+  text-shadow: 1px 1px 0px #000000;
+}
+
+[data-theme="retro"] .bg-primary:hover {
+  background: linear-gradient(180deg, #ff99ff 0%, #ff33ff 50%, #dd00dd 100%);
+}
+
+[data-theme="retro"] .bg-primary:active {
+  border-style: inset;
+  border-color: #990099 #ff99ff #ff99ff #990099;
+  box-shadow: 1px 1px 0px #000000;
+  transform: translate(2px, 2px);
+}
+
+/* Chunky hover effects */
+[data-theme="retro"] a:not(.bg-primary):hover {
+  text-decoration: underline wavy;
+  text-underline-offset: 4px;
+}
+
+/* Input and form elements */
+[data-theme="retro"] input,
+[data-theme="retro"] textarea,
+[data-theme="retro"] select {
+  background: #000033;
+  border-style: inset;
+  border-color: #000066 #00ffff #00ffff #000066;
+  color: #00ff00;
+  font-family: var(--font-retro);
+}
+
+[data-theme="retro"] input:focus,
+[data-theme="retro"] textarea:focus,
+[data-theme="retro"] select:focus {
+  outline: 2px dashed #ffff00;
+  outline-offset: 2px;
+}
+
+/* Horizontal rule styling */
+[data-theme="retro"] hr,
+[data-theme="retro"] .border-t {
+  border-image: repeating-linear-gradient(
+      90deg,
+      #ff00ff,
+      #ff00ff 5px,
+      #00ffff 5px,
+      #00ffff 10px,
+      #ffff00 10px,
+      #ffff00 15px,
+      #00ff00 15px,
+      #00ff00 20px
+    )
+    1;
+  border-width: 3px;
+  border-style: solid;
 }
 
 /* Typography plugin customization */
@@ -349,8 +436,191 @@ body {
 }
 
 [data-theme="retro"] {
-  --milestone-ring: rgba(0, 0, 0, 0.7);
-  --milestone-corner: #ffe66d;
+  --milestone-ring: rgba(255, 0, 255, 0.7);
+  --milestone-corner: #00ff00;
+}
+
+/* ========================================
+   RETRO 90s GEOCITIES THEME STYLES
+   ======================================== */
+
+/* Starfield background for retro mode */
+[data-theme="retro"] body {
+  font-family: var(--font-retro);
+  background-color: #000080;
+  background-image: 
+    /* Twinkling stars effect */ radial-gradient(
+      2px 2px at 20px 30px,
+      #ffffff,
+      transparent
+    ),
+    radial-gradient(2px 2px at 40px 70px, rgba(255, 255, 255, 0.8), transparent),
+    radial-gradient(1px 1px at 90px 40px, #ffffff, transparent),
+    radial-gradient(
+      2px 2px at 130px 80px,
+      rgba(255, 255, 255, 0.6),
+      transparent
+    ),
+    radial-gradient(1px 1px at 160px 120px, #ffffff, transparent),
+    radial-gradient(
+      2px 2px at 200px 50px,
+      rgba(255, 255, 255, 0.9),
+      transparent
+    ),
+    radial-gradient(1px 1px at 250px 160px, #ffffff, transparent),
+    radial-gradient(
+      2px 2px at 280px 90px,
+      rgba(255, 255, 255, 0.7),
+      transparent
+    ),
+    radial-gradient(1px 1px at 320px 30px, #ffffff, transparent),
+    radial-gradient(
+      2px 2px at 350px 140px,
+      rgba(255, 255, 255, 0.8),
+      transparent
+    ),
+    /* Colorful stars */
+      radial-gradient(2px 2px at 60px 100px, #ff00ff, transparent),
+    radial-gradient(2px 2px at 180px 20px, #00ffff, transparent),
+    radial-gradient(2px 2px at 300px 110px, #ffff00, transparent),
+    radial-gradient(2px 2px at 100px 150px, #00ff00, transparent);
+  background-size: 400px 200px;
+  background-repeat: repeat;
+}
+
+/* Retro Typography */
+[data-theme="retro"] h1,
+[data-theme="retro"] h2,
+[data-theme="retro"] h3 {
+  font-family: var(--font-retro-display);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Rainbow text effect for retro headings */
+[data-theme="retro"] .retro-rainbow {
+  background: linear-gradient(
+    90deg,
+    #ff0000 0%,
+    #ff8800 14%,
+    #ffff00 28%,
+    #00ff00 42%,
+    #00ffff 56%,
+    #0088ff 70%,
+    #ff00ff 84%,
+    #ff0000 100%
+  );
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: rainbow-shift 3s linear infinite;
+}
+
+@keyframes rainbow-shift {
+  0% {
+    background-position: 0% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+/* Marquee animation */
+@keyframes marquee {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+[data-theme="retro"] .retro-marquee {
+  display: inline-block;
+  white-space: nowrap;
+  animation: marquee 15s linear infinite;
+}
+
+/* Blink animation (subtle) */
+@keyframes retro-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+[data-theme="retro"] .retro-blink {
+  animation: retro-blink 1s steps(1) infinite;
+}
+
+/* Sparkle/twinkle animation */
+@keyframes sparkle {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.8);
+  }
+}
+
+[data-theme="retro"] .retro-sparkle {
+  animation: sparkle 1.5s ease-in-out infinite;
+}
+
+/* Sparkle decorators using pseudo-elements */
+[data-theme="retro"] .retro-sparkle-decor::before,
+[data-theme="retro"] .retro-sparkle-decor::after {
+  content: "✦";
+  display: inline-block;
+  margin: 0 0.5em;
+  color: #ffff00;
+  animation: sparkle 1s ease-in-out infinite;
+}
+
+[data-theme="retro"] .retro-sparkle-decor::after {
+  animation-delay: 0.5s;
+  color: #ff00ff;
+}
+
+/* Star cursor for links in retro mode */
+[data-theme="retro"] a:hover,
+[data-theme="retro"] button:hover {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Ctext x='0' y='20' font-size='20'%3E⭐%3C/text%3E%3C/svg%3E"),
+    pointer;
+}
+
+/* Visited link styling */
+[data-theme="retro"] a:visited {
+  color: #9900ff;
+}
+
+/* Glow effect for text */
+[data-theme="retro"] .retro-glow {
+  text-shadow: 0 0 5px currentColor, 0 0 10px currentColor,
+    0 0 20px currentColor;
+}
+
+/* Under construction style banner */
+[data-theme="retro"] .retro-construction {
+  background: repeating-linear-gradient(
+    45deg,
+    #ffff00,
+    #ffff00 10px,
+    #000000 10px,
+    #000000 20px
+  );
+  padding: 0.5rem 1rem;
+  color: #000000;
+  font-weight: bold;
+  text-align: center;
 }
 
 /* Decade Colors - Light Mode */
@@ -394,19 +664,19 @@ body {
   --decade-2090: #e11d48;
 }
 
-/* Decade Colors - Retro Mode */
+/* Decade Colors - Retro Mode (garish 90s colors) */
 [data-theme="retro"] {
-  --decade-1990: #ff6b6b;
-  --decade-2000: #4ecdc4;
-  --decade-2010: #ffe66d;
-  --decade-2020: #95e1d3;
-  --decade-2030: #f38181;
-  --decade-2040: #aa96da;
-  --decade-2050: #fcbad3;
-  --decade-2060: #a8d8ea;
-  --decade-2070: #ffb347;
-  --decade-2080: #b5ead7;
-  --decade-2090: #ffc8dd;
+  --decade-1990: #ff00ff;
+  --decade-2000: #00ff00;
+  --decade-2010: #ffff00;
+  --decade-2020: #00ffff;
+  --decade-2030: #ff6600;
+  --decade-2040: #9900ff;
+  --decade-2050: #ff0066;
+  --decade-2060: #66ff00;
+  --decade-2070: #ff3300;
+  --decade-2080: #00ff99;
+  --decade-2090: #ff99ff;
 }
 
 /* Apply decade colors to cells */

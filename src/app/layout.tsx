@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
-import { Geist, JetBrains_Mono, Fraunces } from "next/font/google";
+import {
+  Geist,
+  JetBrains_Mono,
+  Fraunces,
+  Comic_Neue,
+  Bungee,
+} from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { NavBar } from "@/components/NavBar";
 import { Footer } from "@/components/Footer";
@@ -20,6 +26,19 @@ const fraunces = Fraunces({
   subsets: ["latin"],
 });
 
+// Retro 90s fonts
+const comicNeue = Comic_Neue({
+  variable: "--font-comic-neue",
+  subsets: ["latin"],
+  weight: ["300", "400", "700"],
+});
+
+const bungee = Bungee({
+  variable: "--font-bungee",
+  subsets: ["latin"],
+  weight: "400",
+});
+
 export const metadata: Metadata = {
   title: "Gabby's Garden",
   description: "A soft digital garden where ideas bloom and grow",
@@ -33,7 +52,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${jetbrainsMono.variable} ${fraunces.variable} antialiased min-h-screen flex flex-col`}
+        className={`${geistSans.variable} ${jetbrainsMono.variable} ${fraunces.variable} ${comicNeue.variable} ${bungee.variable} antialiased min-h-screen flex flex-col`}
       >
         <ThemeProvider
           attribute="data-theme"
