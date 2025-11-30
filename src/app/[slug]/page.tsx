@@ -11,7 +11,8 @@ interface PageProps {
 
 export async function generateStaticParams() {
   const slugs = getAllPageSlugs();
-  return slugs.map((slug) => ({ slug }));
+  // Exclude 'about' since it has its own dedicated route
+  return slugs.filter((slug) => slug !== "about").map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: PageProps) {
