@@ -97,3 +97,14 @@ export function getPageBySlug(slug: string): Post | null {
   };
 }
 
+export function getAllPageSlugs(): string[] {
+  if (!fs.existsSync(pagesDirectory)) {
+    return [];
+  }
+
+  const fileNames = fs.readdirSync(pagesDirectory);
+  return fileNames
+    .filter((fileName) => fileName.endsWith(".mdx"))
+    .map((fileName) => fileName.replace(/\.mdx$/, ""));
+}
+
