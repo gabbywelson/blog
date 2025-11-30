@@ -1,5 +1,6 @@
 import { Github, Twitter, Linkedin, Newspaper, Mail } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 const socialLinks = [
   { href: "https://github.com/gabbywelson", icon: Github, label: "GitHub" },
@@ -27,10 +28,17 @@ export function Footer() {
           {/* Brand */}
           <div className="text-center md:text-left">
             <p className="font-serif text-lg font-semibold text-foreground">
-              Digital Garden
+              Gabby&apos;s Garden
             </p>
             <p className="text-sm text-muted-foreground mt-1">
-              Growing ideas, one thought at a time.
+              <ul>
+                <li>
+                  <Link href="/colophon">Colophon</Link>
+                </li>
+                <li>
+                  <Link href="/ai">AI usage</Link>
+                </li>
+              </ul>
             </p>
           </div>
 
