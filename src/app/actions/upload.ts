@@ -22,13 +22,22 @@ export async function uploadFile(formData: FormData) {
   }
 
   try {
-    const blob = await put(file.name, file, {
+    const result = await put(file.name, file, {
       access: "public",
     });
 
     revalidatePath("/admin");
 
-    return { success: true, blob };
+    // Return blob with all required properties for the UI
+    return {
+      success: true,
+      blob: {
+        url: result.url,
+        pathname: result.pathname,
+        size: file.size,
+        uploadedAt: new Date(),
+      },
+    };
   } catch (error) {
     console.error("Upload error:", error);
     return { error: "Failed to upload file" };

@@ -1,6 +1,10 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import type { MDXComponents } from "mdx/types";
+
+type MDXComponents = Record<
+  string,
+  React.ComponentType<Record<string, unknown>>
+>;
 
 // Custom responsive image component for MDX
 function MDXImage({
@@ -8,7 +12,7 @@ function MDXImage({
   alt,
   ...props
 }: React.ImgHTMLAttributes<HTMLImageElement>) {
-  if (!src) return null;
+  if (!src || typeof src !== "string") return null;
 
   // Handle both relative and absolute URLs
   const imageSrc = src.startsWith("/") || src.startsWith("http") ? src : src;
@@ -115,4 +119,3 @@ export const components: MDXComponents = {
 };
 
 export default components;
-

@@ -50,7 +50,7 @@ export function AdminDashboard({ initialBlobs }: AdminDashboardProps) {
             description: result.error,
           });
         } else if (result.blob) {
-          setBlobs((prev) => [result.blob as Blob, ...prev]);
+          setBlobs((prev) => [result.blob, ...prev]);
           toast.success(`Uploaded ${file.name}`);
         }
       } catch (error) {
