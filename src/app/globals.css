@@ -197,3 +197,249 @@ body {
 .animate-float {
   animation: float 6s ease-in-out infinite;
 }
+
+/* ========================================
+   WEEKS VISUALIZATION STYLES
+   ======================================== */
+
+/* Weeks Grid Layout - 52 columns for 52 weeks per year */
+.weeks-grid {
+  display: grid;
+  grid-template-columns: repeat(52, minmax(8px, 12px));
+  gap: 2px;
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .weeks-grid {
+    gap: 3px;
+  }
+}
+
+/* Individual week cell */
+.week-cell {
+  aspect-ratio: 1;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  position: relative;
+}
+
+.week-cell:hover {
+  transform: scale(1.8);
+  z-index: 50;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Milestone weeks with events */
+.week-milestone {
+  border-radius: 3px;
+  box-shadow: 0 0 0 1.5px var(--background),
+    0 0 0 3px var(--milestone-ring, rgba(0, 0, 0, 0.3));
+  position: relative;
+  z-index: 1;
+}
+
+/* Corner indicator for milestones */
+.week-milestone::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 5px 5px 0;
+  border-color: transparent var(--milestone-corner, rgba(255, 255, 255, 0.9))
+    transparent transparent;
+  border-radius: 0 2px 0 0;
+}
+
+/* Emoji on milestone cells - only show on hover */
+.week-emoji {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 6px;
+  line-height: 1;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  z-index: 2;
+}
+
+.week-cell:hover .week-emoji {
+  opacity: 1;
+  font-size: 14px;
+}
+
+/* Future weeks - faded */
+.week-future {
+  opacity: 0.3;
+}
+
+/* Current week - pulse animation */
+.week-current {
+  animation: pulse-week 2s ease-in-out infinite;
+  box-shadow: 0 0 0 2px var(--primary);
+}
+
+@keyframes pulse-week {
+  0%,
+  100% {
+    box-shadow: 0 0 0 2px var(--primary);
+  }
+  50% {
+    box-shadow: 0 0 0 4px var(--primary), 0 0 12px var(--primary);
+  }
+}
+
+/* Tooltip */
+.week-tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 8px;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+  z-index: 100;
+}
+
+.week-cell:hover .week-tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+.week-tooltip-content {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  min-width: 180px;
+  max-width: 250px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  white-space: normal;
+  text-align: left;
+}
+
+/* Tooltip arrow */
+.week-tooltip-content::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: var(--card);
+}
+
+/* Milestone indicator colors */
+:root {
+  --milestone-ring: rgba(41, 37, 36, 0.5);
+  --milestone-corner: rgba(255, 255, 255, 0.95);
+}
+
+[data-theme="dark"] {
+  --milestone-ring: rgba(226, 232, 240, 0.5);
+  --milestone-corner: rgba(255, 255, 255, 0.9);
+}
+
+[data-theme="retro"] {
+  --milestone-ring: rgba(0, 0, 0, 0.7);
+  --milestone-corner: #ffe66d;
+}
+
+/* Decade Colors - Light Mode */
+:root {
+  /* Purple family - 1990s */
+  --decade-1990: #c4b5fd;
+  /* Sage family - 2000s */
+  --decade-2000: #a4c3b2;
+  /* Coral family - 2010s */
+  --decade-2010: #fca5a5;
+  /* Blue family - 2020s */
+  --decade-2020: #93c5fd;
+  /* Teal family - 2030s */
+  --decade-2030: #5eead4;
+  /* Amber family - 2040s */
+  --decade-2040: #fcd34d;
+  /* Pink family - 2050s */
+  --decade-2050: #f9a8d4;
+  /* Lime family - 2060s */
+  --decade-2060: #bef264;
+  /* Orange family - 2070s */
+  --decade-2070: #fdba74;
+  /* Violet family - 2080s */
+  --decade-2080: #a78bfa;
+  /* Rose family - 2090s */
+  --decade-2090: #fda4af;
+}
+
+/* Decade Colors - Dark Mode */
+[data-theme="dark"] {
+  --decade-1990: #7c3aed;
+  --decade-2000: #059669;
+  --decade-2010: #dc2626;
+  --decade-2020: #2563eb;
+  --decade-2030: #0d9488;
+  --decade-2040: #d97706;
+  --decade-2050: #db2777;
+  --decade-2060: #65a30d;
+  --decade-2070: #ea580c;
+  --decade-2080: #7c3aed;
+  --decade-2090: #e11d48;
+}
+
+/* Decade Colors - Retro Mode */
+[data-theme="retro"] {
+  --decade-1990: #ff6b6b;
+  --decade-2000: #4ecdc4;
+  --decade-2010: #ffe66d;
+  --decade-2020: #95e1d3;
+  --decade-2030: #f38181;
+  --decade-2040: #aa96da;
+  --decade-2050: #fcbad3;
+  --decade-2060: #a8d8ea;
+  --decade-2070: #ffb347;
+  --decade-2080: #b5ead7;
+  --decade-2090: #ffc8dd;
+}
+
+/* Apply decade colors to cells */
+.week-decade-1990 {
+  background-color: var(--decade-1990);
+}
+.week-decade-2000 {
+  background-color: var(--decade-2000);
+}
+.week-decade-2010 {
+  background-color: var(--decade-2010);
+}
+.week-decade-2020 {
+  background-color: var(--decade-2020);
+}
+.week-decade-2030 {
+  background-color: var(--decade-2030);
+}
+.week-decade-2040 {
+  background-color: var(--decade-2040);
+}
+.week-decade-2050 {
+  background-color: var(--decade-2050);
+}
+.week-decade-2060 {
+  background-color: var(--decade-2060);
+}
+.week-decade-2070 {
+  background-color: var(--decade-2070);
+}
+.week-decade-2080 {
+  background-color: var(--decade-2080);
+}
+.week-decade-2090 {
+  background-color: var(--decade-2090);
+}
