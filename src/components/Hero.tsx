@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export function Hero() {
   return (
-    <section className="relative w-full h-[70vh] min-h-[500px] -mt-24 pt-24 flex items-center justify-center overflow-hidden">
+    <section className="relative w-full h-[70vh] min-h-[500px] -mt-24 flex items-center justify-center overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0 -z-10">
         <Image
@@ -19,7 +19,7 @@ export function Hero() {
       </div>
 
       {/* Content - The Clearing */}
-      <div className="relative z-10 text-center space-y-4 max-w-2xl px-4 pt-16">
+      <div className="relative z-10 text-center space-y-4 max-w-2xl px-4">
         <h1 className="font-serif text-5xl md:text-7xl font-bold tracking-tight">
           <span className="text-primary">Gabby&apos;s</span>{" "}
           <span className="text-secondary">Garden</span>
@@ -32,4 +32,3 @@ export function Hero() {
     </section>
   );
 }
-
