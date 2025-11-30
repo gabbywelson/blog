@@ -18,29 +18,50 @@ export interface Post extends PostMeta {
   content: string;
 }
 
-export function getAllPosts(): PostMeta[] {
-  if (!fs.existsSync(postsDirectory)) {
+/**
+ * Recursively find all MDX files in a directory and its subdirectories
+ */
+function findMdxFiles(dir: string, baseDir: string = dir): string[] {
+  if (!fs.existsSync(dir)) {
     return [];
   }
 
-  const fileNames = fs.readdirSync(postsDirectory);
-  const posts = fileNames
-    .filter((fileName) => fileName.endsWith(".mdx"))
-    .map((fileName) => {
-      const slug = fileName.replace(/\.mdx$/, "");
-      const fullPath = path.join(postsDirectory, fileName);
-      const fileContents = fs.readFileSync(fullPath, "utf8");
-      const { data } = matter(fileContents);
+  const entries = fs.readdirSync(dir, { withFileTypes: true });
+  const files: string[] = [];
 
-      return {
-        slug,
-        title: data.title || "Untitled",
-        date: data.date || new Date().toISOString(),
-        tags: data.tags || [],
-        excerpt: data.excerpt || "",
-        image: data.image,
-      };
-    });
+  for (const entry of entries) {
+    const fullPath = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      // Recursively search subdirectories
+      files.push(...findMdxFiles(fullPath, baseDir));
+    } else if (entry.isFile() && entry.name.endsWith(".mdx")) {
+      // Get the relative path from the base directory and convert to slug
+      const relativePath = path.relative(baseDir, fullPath);
+      const slug = relativePath.replace(/\.mdx$/, "");
+      files.push(slug);
+    }
+  }
+
+  return files;
+}
+
+export function getAllPosts(): PostMeta[] {
+  const slugs = findMdxFiles(postsDirectory);
+
+  const posts = slugs.map((slug) => {
+    const fullPath = path.join(postsDirectory, `${slug}.mdx`);
+    const fileContents = fs.readFileSync(fullPath, "utf8");
+    const { data } = matter(fileContents);
+
+    return {
+      slug,
+      title: data.title || "Untitled",
+      date: data.date || new Date().toISOString(),
+      tags: data.tags || [],
+      excerpt: data.excerpt || "",
+      image: data.image,
+    };
+  });
 
   // Sort by date, newest first
   return posts.sort((a, b) => {
@@ -49,6 +70,7 @@ export function getAllPosts(): PostMeta[] {
 }
 
 export function getPostBySlug(slug: string): Post | null {
+  // Handle both single segment and multi-segment slugs
   const fullPath = path.join(postsDirectory, `${slug}.mdx`);
 
   if (!fs.existsSync(fullPath)) {
@@ -69,15 +91,10 @@ export function getPostBySlug(slug: string): Post | null {
   };
 }
 
-export function getAllPostSlugs(): string[] {
-  if (!fs.existsSync(postsDirectory)) {
-    return [];
-  }
-
-  const fileNames = fs.readdirSync(postsDirectory);
-  return fileNames
-    .filter((fileName) => fileName.endsWith(".mdx"))
-    .map((fileName) => fileName.replace(/\.mdx$/, ""));
+export function getAllPostSlugs(): string[][] {
+  const slugs = findMdxFiles(postsDirectory);
+  // Return as array of slug segments for catch-all routes
+  return slugs.map((slug) => slug.split("/"));
 }
 
 export function getPageBySlug(slug: string): Post | null {
@@ -110,4 +127,3 @@ export function getAllPageSlugs(): string[] {
     .filter((fileName) => fileName.endsWith(".mdx"))
     .map((fileName) => fileName.replace(/\.mdx$/, ""));
 }
-

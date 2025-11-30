@@ -10,7 +10,7 @@ import { components } from "@/components/MDXComponents";
 import { mdxOptions } from "@/lib/mdx-options";
 
 interface PostPageProps {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string[] }>;
 }
 
 export async function generateStaticParams() {
@@ -20,7 +20,8 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: PostPageProps) {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
+  const slugPath = slug.join("/");
+  const post = getPostBySlug(slugPath);
 
   if (!post) {
     return { title: "Post Not Found" };
@@ -34,7 +35,8 @@ export async function generateMetadata({ params }: PostPageProps) {
 
 export default async function PostPage({ params }: PostPageProps) {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
+  const slugPath = slug.join("/");
+  const post = getPostBySlug(slugPath);
 
   if (!post) {
     notFound();
