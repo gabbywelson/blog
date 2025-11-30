@@ -1,26 +1,119 @@
 @import "tailwindcss";
 
+/* ========================================
+   SOFT DIGITAL GARDEN - DESIGN SYSTEM
+   Three themes: Light (Lilac/Sage), Dark (Deep Plum), Retro (Brutalist)
+   ======================================== */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* LIGHT MODE: Soft, Warm, Lilac & Sage */
+  --background: #faf9f6;
+  --foreground: #292524;
+  --primary: #c4b5fd;
+  --primary-foreground: #2e1065;
+  --secondary: #a4c3b2;
+  --secondary-foreground: #0f172a;
+  --accent: #fca5a5;
+  --accent-foreground: #450a0a;
+  --muted: #f5f5f4;
+  --muted-foreground: #78716c;
+  --card: #ffffff;
+  --card-foreground: #292524;
+  --border: #e7e5e4;
+  --radius: 1.5rem;
 }
 
+[data-theme="dark"] {
+  /* DARK MODE: Deep Slate, Plum, & Lavender */
+  --background: #0f172a;
+  --foreground: #e2e8f0;
+  --primary: #8b5cf6;
+  --primary-foreground: #ffffff;
+  --secondary: #334155;
+  --secondary-foreground: #f8fafc;
+  --accent: #ec4899;
+  --accent-foreground: #ffffff;
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8;
+  --card: #1e293b;
+  --card-foreground: #e2e8f0;
+  --border: #334155;
+  --radius: 1.5rem;
+}
+
+[data-theme="retro"] {
+  /* RETRO MODE: High Contrast, Brutalist, Playful */
+  --background: #fffff0;
+  --foreground: #000000;
+  --primary: #ff6b6b;
+  --primary-foreground: #000000;
+  --secondary: #4ecdc4;
+  --secondary-foreground: #000000;
+  --accent: #ffe66d;
+  --accent-foreground: #000000;
+  --muted: #eeeeee;
+  --muted-foreground: #333333;
+  --card: #ffffff;
+  --card-foreground: #000000;
+  --border: #000000;
+  --radius: 0.5rem;
+}
+
+/* Expose CSS variables to Tailwind v4 */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-border: var(--border);
+
+  --font-serif: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+
+  --radius-sm: calc(var(--radius) - 0.75rem);
+  --radius-md: calc(var(--radius) - 0.5rem);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 0.5rem);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Base styles */
+* {
+  border-color: var(--border);
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Retro mode special styles */
+[data-theme="retro"] * {
+  border-width: 2px;
+}
+
+[data-theme="retro"] button,
+[data-theme="retro"] a {
+  font-weight: 700;
+}
+
+/* Typography plugin customization */
+.prose {
+  --tw-prose-body: var(--foreground);
+  --tw-prose-headings: var(--foreground);
+  --tw-prose-links: var(--primary);
+  --tw-prose-bold: var(--foreground);
+  --tw-prose-code: var(--accent);
+  --tw-prose-pre-bg: var(--muted);
+  --tw-prose-pre-code: var(--foreground);
 }
