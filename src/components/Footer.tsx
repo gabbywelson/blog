@@ -1,10 +1,20 @@
-import { Github, Twitter, Mail } from "lucide-react";
+import { Github, Twitter, Linkedin, Newspaper, Mail } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const socialLinks = [
-  { href: "https://github.com", icon: Github, label: "GitHub" },
-  { href: "https://twitter.com", icon: Twitter, label: "Twitter" },
-  { href: "mailto:hello@example.com", icon: Mail, label: "Email" },
+  { href: "https://github.com/gabbywelson", icon: Github, label: "GitHub" },
+  { href: "https://twitter.com/gabbywelson", icon: Twitter, label: "Twitter" },
+  {
+    href: "https://linkedin.com/in/gabbywelson",
+    icon: Linkedin,
+    label: "Linkedin",
+  },
+  {
+    href: "https://tacobelllabs.net/@gabby",
+    icon: Newspaper,
+    label: "Mastodon",
+  },
+  { href: "mailto:hello@welson.net", icon: Mail, label: "Email me" },
 ];
 
 export function Footer() {
@@ -58,4 +68,3 @@ export function Footer() {
     </footer>
   );
 }
-
