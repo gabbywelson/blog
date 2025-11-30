@@ -21,7 +21,7 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
-  title: "Digital Garden",
+  title: "Gabby's Garden",
   description: "A soft digital garden where ideas bloom and grow",
 };
 

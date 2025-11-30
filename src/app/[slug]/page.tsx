@@ -24,8 +24,8 @@ export async function generateMetadata({ params }: PageProps) {
   }
 
   return {
-    title: `${page.title} | Digital Garden`,
-    description: page.excerpt || `${page.title} - Digital Garden`,
+    title: `${page.title} | Gabby's Garden`,
+    description: page.excerpt || `${page.title} - Gabby's Garden`,
   };
 }
 

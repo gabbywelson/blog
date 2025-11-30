@@ -3,7 +3,7 @@ import { Timeline, TimelineEntry } from "@/components/Timeline";
 import Image from "next/image";
 
 export const metadata: Metadata = {
-  title: "About | Digital Garden",
+  title: "About | Gabby's Garden",
   description: "The gardener behind the garden.",
 };
 

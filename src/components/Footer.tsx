@@ -33,6 +33,9 @@ export function Footer() {
             <p className="text-sm text-muted-foreground mt-1">
               <ul>
                 <li>
+                  <Link href="/notes">Notes</Link>
+                </li>
+                <li>
                   <Link href="/colophon">Colophon</Link>
                 </li>
                 <li>

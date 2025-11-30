@@ -2,7 +2,7 @@ import { list } from "@vercel/blob";
 import { AdminDashboard } from "./AdminDashboard";
 
 export const metadata = {
-  title: "Admin | Digital Garden",
+  title: "Admin | Gabby's Garden",
   description: "Hidden admin dashboard",
 };
 

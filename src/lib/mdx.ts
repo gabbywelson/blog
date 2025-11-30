@@ -5,6 +5,7 @@ import matter from "gray-matter";
 const postsDirectory = path.join(process.cwd(), "src/content/posts");
 const pagesDirectory = path.join(process.cwd(), "src/content/pages");
 const nowDirectory = path.join(process.cwd(), "src/content/now");
+const notesDirectory = path.join(process.cwd(), "src/content/notes");
 
 export interface PostMeta {
   title: string;
@@ -217,4 +218,69 @@ export function extractBulletPoints(content: string): string[] {
   }
 
   return bullets;
+}
+
+// Notes - Evergreen content
+export interface NoteMeta {
+  title: string;
+  slug: string;
+  excerpt: string;
+}
+
+export interface Note extends NoteMeta {
+  content: string;
+}
+
+export function getAllNotes(): NoteMeta[] {
+  if (!fs.existsSync(notesDirectory)) {
+    return [];
+  }
+
+  const fileNames = fs.readdirSync(notesDirectory);
+  const notes = fileNames
+    .filter((fileName) => fileName.endsWith(".mdx"))
+    .map((fileName) => {
+      const slug = fileName.replace(/\.mdx$/, "");
+      const fullPath = path.join(notesDirectory, fileName);
+      const fileContents = fs.readFileSync(fullPath, "utf8");
+      const { data } = matter(fileContents);
+
+      return {
+        slug,
+        title: data.title || "Untitled",
+        excerpt: data.excerpt || "",
+      };
+    });
+
+  // Sort alphabetically by title
+  return notes.sort((a, b) => a.title.localeCompare(b.title));
+}
+
+export function getNoteBySlug(slug: string): Note | null {
+  const fullPath = path.join(notesDirectory, `${slug}.mdx`);
+
+  if (!fs.existsSync(fullPath)) {
+    return null;
+  }
+
+  const fileContents = fs.readFileSync(fullPath, "utf8");
+  const { data, content } = matter(fileContents);
+
+  return {
+    slug,
+    title: data.title || "Untitled",
+    excerpt: data.excerpt || "",
+    content,
+  };
+}
+
+export function getAllNoteSlugs(): string[] {
+  if (!fs.existsSync(notesDirectory)) {
+    return [];
+  }
+
+  const fileNames = fs.readdirSync(notesDirectory);
+  return fileNames
+    .filter((fileName) => fileName.endsWith(".mdx"))
+    .map((fileName) => fileName.replace(/\.mdx$/, ""));
 }
