@@ -16,7 +16,7 @@ export function NavBar() {
   const pathname = usePathname();
 
   return (
-    <header className="fixed top-4 left-1/2 -translate-x-1/2 z-50">
+    <header className="fixed top-4 left-1/2 z-50 animate-float">
       <nav
         className={cn(
           "flex items-center gap-1 px-2 py-2",
