@@ -9,6 +9,7 @@ const navLinks = [
   { href: "/", label: "Home" },
   { href: "/posts", label: "Posts" },
   { href: "/about", label: "About" },
+  { href: "/now", label: "Now" },
 ];
 
 export function NavBar() {
@@ -51,4 +52,3 @@ export function NavBar() {
     </header>
   );
 }
-
