@@ -9,6 +9,7 @@ import {
 import { ThemeProvider } from "next-themes";
 import { NavBar } from "@/components/NavBar";
 import { Footer } from "@/components/Footer";
+import { CursorSparkles } from "@/components/CursorSparkles";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -60,6 +61,7 @@ export default function RootLayout({
           enableSystem={false}
           themes={["light", "dark", "retro"]}
         >
+          <CursorSparkles />
           <NavBar />
           <main className="flex-1 pt-24">{children}</main>
           <Footer />

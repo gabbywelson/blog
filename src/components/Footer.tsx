@@ -36,13 +36,14 @@ export function Footer() {
   return (
     <footer className={cn("border-t border-border mt-16", isRetro && "border-t-4")}>
       <div className="max-w-4xl mx-auto px-6 py-12">
-        {/* Retro decorative element */}
+        {/* Retro marquee banner */}
         {isRetro && (
-          <div className="text-center mb-8">
-            <div className="inline-block">
-              <span className="text-2xl">
-                🌟 ✨ 💫 ⭐ 🌟 ✨ 💫 ⭐ 🌟
-              </span>
+          <div className="mb-8 overflow-hidden border-2 border-[#ff00ff] bg-[#000033] py-2">
+            <div className="retro-marquee whitespace-nowrap text-[#00ffff]">
+              ★ Thanks for visiting my page! ★ Don&apos;t forget to sign my guestbook! ★ 
+              You are visitor #{Math.floor(Math.random() * 9000) + 1000} ★ 
+              Come back soon! ★ Add me to your bookmarks! ★ 
+              Thanks for visiting my page! ★ Don&apos;t forget to sign my guestbook! ★
             </div>
           </div>
         )}

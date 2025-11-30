@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import { ArrowRight, Sparkles, BookOpen, User } from "lucide-react";
 import { format } from "date-fns";
 import { Hero } from "@/components/Hero";
+import { RetroMarquee, RetroStarMarquee } from "@/components/RetroMarquee";
 
 // Colors for tag buttons
 const tagColors = [
@@ -40,6 +41,10 @@ export default function HomePage() {
   return (
     <>
       <Hero />
+
+      {/* Retro star divider */}
+      <RetroStarMarquee direction="right" speed={25} />
+
       <div className="max-w-5xl mx-auto px-6 py-12">
         {/* Bento Grid */}
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -212,6 +217,18 @@ export default function HomePage() {
               </div>
             </div>
           )}
+
+          {/* Retro announcement marquee */}
+          <div className="lg:col-span-3">
+            <RetroMarquee speed={18}>
+              <span className="text-[#00ff00]">
+                ★ Welcome to my corner of the web! ★ Check out my latest posts!
+                ★ Don&apos;t forget to bookmark this page! ★ Thanks for stopping
+                by! ★ Welcome to my corner of the web! ★ Check out my latest
+                posts! ★
+              </span>
+            </RetroMarquee>
+          </div>
 
           {/* Quick Links */}
           <div
