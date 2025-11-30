@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { Timeline, TimelineEntry } from "@/components/Timeline";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "About | Digital Garden",
@@ -7,11 +8,26 @@ export const metadata: Metadata = {
 };
 
 const introItems = [
-  { emoji: "🌲", text: "I live on the west coast but New England will always be home" },
-  { emoji: "👩‍💻", text: "I'm a software engineer passionate about making products that help people" },
-  { emoji: "🏳️‍⚧️", text: "I'm a queer trans woman and use she/her/hers pronouns" },
-  { emoji: "🐱", text: "I'm a cat mom to two little gremlins who I love very dearly" },
-  { emoji: "☕", text: "I love coffee, craft cocktails 🍸, and trying all kinds of food 🍴" },
+  {
+    emoji: "🌲",
+    text: "I live on the west coast but New England will always be home",
+  },
+  {
+    emoji: "👩‍💻",
+    text: "I'm a software engineer passionate about making products that help people",
+  },
+  {
+    emoji: "🏳️‍⚧️",
+    text: "I'm a queer trans woman and use she/her/hers pronouns",
+  },
+  {
+    emoji: "🐱",
+    text: "I'm a cat mom to two little gremlins who I love very dearly",
+  },
+  {
+    emoji: "☕",
+    text: "I love coffee, craft cocktails 🍸, and trying all kinds of food 🍴",
+  },
 ];
 
 const timelineData: TimelineEntry[] = [
@@ -68,12 +84,16 @@ export default function AboutPage() {
     <div className="min-h-screen">
       {/* Header */}
       <header className="max-w-4xl mx-auto px-6 pt-12 pb-8 text-center">
-        <h1 className="font-serif text-4xl md:text-5xl font-bold mb-4">About</h1>
-        <p className="text-xl text-muted-foreground">The gardener behind the garden.</p>
+        <h1 className="font-serif text-4xl md:text-5xl font-bold mb-4">
+          About
+        </h1>
+        <p className="text-xl text-muted-foreground">
+          The gardener behind the garden.
+        </p>
       </header>
 
       {/* Intro Section */}
-      <section className="max-w-3xl mx-auto px-6 pb-12">
+      <section className="max-w-3xl mx-auto px-6 pb-12 flex-col items-center justify-center flex">
         <h2 className="font-serif text-2xl font-semibold mb-6">
           Here&apos;s a few things about me:
         </h2>
@@ -90,14 +110,25 @@ export default function AboutPage() {
         </ul>
       </section>
 
+      {/* Image section */}
+      <section className="max-w-3xl mx-auto px-6 pb-12 flex justify-center">
+        <Image
+          src="https://m2odgjcmaljdcanu.public.blob.vercel-storage.com/gabby-pixel.jpg"
+          alt="Orphan Andy"
+          width={500}
+          height={500}
+          className="rounded-lg"
+        />
+      </section>
+
       {/* Timeline Section */}
       <section className="max-w-5xl mx-auto px-6 pb-24">
         <h2 className="font-serif text-2xl font-semibold mb-8 text-center md:text-left">
-          Here&apos;s a rough timeline of things I&apos;ve done personally &amp; professionally:
+          Here&apos;s a rough timeline of things I&apos;ve done personally &amp;
+          professionally:
         </h2>
         <Timeline entries={timelineData} />
       </section>
     </div>
   );
 }
-
