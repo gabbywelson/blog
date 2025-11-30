@@ -1,12 +1,26 @@
 import Link from "next/link";
-import { getAllPosts } from "@/lib/mdx";
+import { getAllPosts, getLatestNowEntry, extractBulletPoints } from "@/lib/mdx";
 import { cn } from "@/lib/utils";
 import { ArrowRight, Sparkles, BookOpen, User } from "lucide-react";
 import { format } from "date-fns";
 
+// Bullet colors for the Now section
+const bulletColors = [
+  "bg-secondary",
+  "bg-primary",
+  "bg-accent",
+  "bg-muted-foreground",
+];
+
 export default function HomePage() {
   const posts = getAllPosts();
   const latestPost = posts[0];
+
+  // Get latest now entry and extract bullet points
+  const latestNowEntry = getLatestNowEntry();
+  const nowBullets = latestNowEntry
+    ? extractBulletPoints(latestNowEntry.content).slice(0, 4)
+    : [];
 
   return (
     <div className="max-w-5xl mx-auto px-6 py-12">
@@ -18,19 +32,21 @@ export default function HomePage() {
         </h1>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
           My own little corner of the internet to share thoughts, link to my
-          work, and let folks know what I'm up to.
+          work, and let folks know what I&apos;m up to.
         </p>
       </section>
 
       {/* Bento Grid */}
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {/* Now Block - Large */}
-        <div
+        <Link
+          href="/now"
           className={cn(
             "md:col-span-2 lg:col-span-2",
             "bg-card border border-border rounded-lg p-8",
             "transition-all duration-300 hover:shadow-xl hover:shadow-primary/5",
-            "hover:border-primary/30"
+            "hover:border-primary/30",
+            "block"
           )}
         >
           <div className="flex items-center gap-3 mb-6">
@@ -40,29 +56,42 @@ export default function HomePage() {
             <h2 className="font-serif text-2xl font-semibold">Now</h2>
           </div>
           <div className="space-y-4 text-muted-foreground">
-            <p>
-              Currently exploring the intersection of design systems and
-              developer experience. Building tools that spark joy.
-            </p>
-            <ul className="space-y-2">
-              <li className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-secondary" />
-                Rebuilding my personal site with Next.js 15
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-primary" />
-                Reading "A Philosophy of Software Design"
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-accent" />
-                Learning Rust for systems programming
-              </li>
-            </ul>
+            {nowBullets.length > 0 ? (
+              <ul className="space-y-2">
+                {nowBullets.map((bullet, index) => (
+                  <li key={index} className="flex items-start gap-2">
+                    <span
+                      className={cn(
+                        "w-2 h-2 rounded-full mt-2 shrink-0",
+                        bulletColors[index % bulletColors.length]
+                      )}
+                    />
+                    <span className="line-clamp-2">{bullet}</span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>Check out what I&apos;m up to right now.</p>
+            )}
           </div>
-          <p className="mt-6 text-sm text-muted-foreground/60">
-            Last updated: November 2024
-          </p>
-        </div>
+          <div className="mt-6 flex items-center justify-between">
+            {latestNowEntry && (
+              <p className="text-sm text-muted-foreground/60">
+                Last updated:{" "}
+                {format(new Date(latestNowEntry.date), "MMMM d, yyyy")}
+              </p>
+            )}
+            <span
+              className={cn(
+                "inline-flex items-center gap-1 text-sm font-medium",
+                "text-primary"
+              )}
+            >
+              See more
+              <ArrowRight className="w-4 h-4" />
+            </span>
+          </div>
+        </Link>
 
         {/* About Block */}
         <div

@@ -1,0 +1,61 @@
+---
+title: Owning my social media
+date: "2025-05-31"
+excerpt: How I made my /micro page
+tags: [blog, programming]
+image: https://m2odgjcmaljdcanu.public.blob.vercel-storage.com/mastodon.png
+---
+
+One of the more recent additions[^1] to my personal site is my [**/micro**](/micro) page, which is still a bit of a work-in-progress but at a high level serves as an archive of my social media posts. I want to write a bit about the inspiration for it, how I built it, and more importantly _why_ I built it.
+
+## the inspiration
+
+I want this site to be not just a blog but a more comprehensive _home_ for myself on the internet. Social media is — for better or for worse — a big part of my life and increasingly with the fall of Twitter and the rise of the fediverse[^2], my social media landscape has been a bit fractured between Bluesky, Mastodon, Discord, Instagram, TikTok, and a smattering of other places. I invested a lot of time into Twitter back in the day and like many people I discovered some of my favorite creators there.
+
+None of the fediverse sites have really landed with me in the same way that Twitter did back in the day. Bluesky is the one I use the most (and it is especially great for me because it has such an active trans community), but my time and attention are split between there, Mastodon, and a few Discord servers I'm in.
+
+One of the _downsides_ to this explosion in new social platforms is that I don't really have a "main place" that I post anymore. By moving my social feeds to a centralized place here on my personal site, there's now a unified "feed" of all the things I'm posting about across various social sites.
+
+An early source of inspiration for this idea was Zach Leatherman's [twitter archive](https://www.zachleat.com/twitter/), which is a self-hosted directory of the 46,288 posts Zach made on Twitter along with a collection of stats — ranging from the most frequent sites linked in his tweets to the most common swear words he's used. I remember being really impressed when I came across this page and tucking it away in my mental list of website inspirations. As Zach [wrote at the time](https://www.zachleat.com/web/own-my-tweets/):
+
+> I’ve invested a lot into Twitter and I’ve received a lot of value from Twitter. I’ve made a lot of friends and professional connections on the site. I’ll be sad when Twitter goes away. Without a doubt, it will go away. It’s only a question of when.
+
+He was, of course, correct. Twitter _did_ go away[^3] and people who had invested time and energy in forming connections there were left with a new name, a new brand, no API, and a huge influx of fascists. Will the same thing happen to Mastodon or Bluesky? It's unlikely! But these networks could certainly change or get worse over time. Bluesky is still relatively centralized and we've _already_ seen questionable moderation decisions there. Mastodon will in theory always be around, but individual instances may die out as their admins get bored of running them and their users may not want to migrate to bigger instances.
+
+Zach's idea of archiving his Twitter activity led me to archive my own posts across Bluesky, Mastodon, and the lesser-known Micro.blog (which I seldom use but still enjoy having an account on because I like what they're doing). So...how did I do it? The answer is a Saturday of vibe coding, trial-and-error, and having _fun_ with computers in a way I don't often get to anymore.
+
+![screenshot1](https://m2odgjcmaljdcanu.public.blob.vercel-storage.com/screenshot1.png)
+
+## the how
+
+I first turned to Claude, as I often do these days when starting a new programming project. I don't want this post to be about the ethics or virtues of AI-assisted programming (I feel like that could be a whole series of posts that I may one day write). But I will say that Claude is an _excellent_ pair programmer for me and how my brain works. I love laying out my ideas in a conversational tone to Claude and having it help me plan out my next steps. As someone with ADHD, having ideas is easy (and frequent!) but actually executing on those ideas is often quite challenging. Claude (or other AI tools like ChatGPT or Gemini) helps me take an idea and break it down into actionable steps. It also helps generate code that usually works pretty flawlessly the first time around, which I typically use as a jumping-off point to modify to suit my needs. It's not that I couldn't write the code myself, it's just that Claude helps turn _ideas into code_ which in turn helps me _get my ideas out of my brain faster._ Here's what I initially prompted Claude with:
+
+> I want to build out a system to archive my social media posts from Bluesky, Mastodon, and Micro.blog. I want to have a cloud-hosted database where the posts are stored with a normalized format (e.g. source, date time, post contents, post id, etc.) and then have some sort of deployed cron job that checks my social feeds on a semi-regular basis, sees if there are new entries, and updates the database with the new entries if present. Lastly, I want a basic secured API with simple pagination and filtering that lets me query my own database for posts returned in a simple JSON format. The goal is to integrate this into my blog/personal site which is made using Astro.
+> I want my own database of posts mostly as a learning project but also for data preservation and a heightened sense of ownership. Help me plan out the best way to do this and the tools to use. I've looked at val.town as a possible source of running cron jobs/serverless functions for querying the social feeds, but I'm open to hearing other options
+
+Claude took this somewhat rambling paragraph and turned it into an action plan. In short, the basic setup went something like this:
+
+1. I set up a database on Supabase with just a single table called `posts` that is meant to store social media posts from my various platforms.
+2. Using the _fantastic_ service [Val.town](http://val.town/), I set up a script for each site to fetch posts, format them into a common data shape, and write the data for each post to my Supabase table. For both Micro.blog and Mastodon, I could simply use the platform's RSS feed functionality to fetch the posts. Bluesky was a little trickier and required querying their API. Claude helped me write the boilerplate code for this, although the basic structure was more or less the same for each network.
+3. Each "val" (as Val.town calls their projects) was set up with a `cron` trigger, which for non-programmers just means the code will get run on a set interval of time moving forward (I went with every hour). All my posts will get fetched each time, but only the new ones will get inserted into the database so there won't be duplicates.
+4. I set up a fourth and final "val" to act as an API endpoint for my new database. Using secured REST API calls, I can query it to fetch my posts. It supports filtering (e.g. "give me only Masotodon posts") and pagination (e.g. "give me just the 10 most recent posts"). Unlike the others, this one gets run whenever its unique URL is queried, not on a recurring cron job.
+5. I set up some simple code on my Astro site to query my new API and render the fetched posts. I did have to make some tweaks to how the site is structured because previously it was configured as a _static_ site, meaning each page was "built" once and then a static HTML file was served. Adding in this data fetching with filtering and pagination requires a range of possible pages (e.g. `/micro?source=bluesky` or `/micro?page=2`), and requires backend code to evaluate those query parameters dynamically on each request. Astro supports this as does Vercel (where I host my site), so it was just a matter of changing around some configuration files and setting all the _other_ pages on my site to build statically[^4].
+
+![diagram](https://m2odgjcmaljdcanu.public.blob.vercel-storage.com/diagram.png)
+
+## the why
+
+So now, I have a nicely working archive of my social media posts that _I own_ and _I control_. I can render them however I want! I can play with the CSS and make them look silly and ridiculous if I want to. If Bluesky goes out of business tomorrow, everything I've ever posted there will still live on here on my own site. I don't really have one overarching "why" behind my decision to build this, but a few reasons are:
+
+- owning your own data is cool and good
+- building new things is fun and this seemed like an interesting thing to build
+- as anti-trans policies proliferate across the country (and world), I am increasingly worried about heavy-handed moderation policies that might try to silence my voice as a trans woman. Not that I say anything particularly controversial on any of these platforms, but just in principle this is something I'm worried about and wanted to take a stand against
+
+I hope this post inspires you to go build cool things on your own website. The internet needs more authenticity, more whimsy, and more people doing stuff _just because they can._
+
+---
+
+[^1]: Alright _technically_ the whole site is basically brand new, but this is one of the more recent things I've added to it.
+[^2]: For the non-nerds reading this, the fediverse is (broadly speaking) a collection of _de-centralized_ social media networks. Most notably Mastodon and Bluesky. The de-centralized nature of fediverse networks means that there is limited central "ownership" in the traditional sense (e.g. Facebook, Twitter, LinkedIn) and instead a collection of personally-run servers that can talk to one another over a shared protocol (much like how email accounts on Gmail, Outlook, and Yahoo can all talk to one another).
+[^3]: I refuse to acknowledge the AI-infested, fascist hellscape of X as the actual successor to Twitter. Twitter died the moment Elon bought it.
+[^4]: Astro honestly didn't have the best developer experience here. I had to put something along the lines of `export const prerender = true` at the top of _every_ page template on my site that isn't `/micro`. It would be better if the config file supported path-based rendering modes. I hope they add this in a future release.

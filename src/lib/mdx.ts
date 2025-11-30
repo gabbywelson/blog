@@ -4,6 +4,7 @@ import matter from "gray-matter";
 
 const postsDirectory = path.join(process.cwd(), "src/content/posts");
 const pagesDirectory = path.join(process.cwd(), "src/content/pages");
+const nowDirectory = path.join(process.cwd(), "src/content/now");
 
 export interface PostMeta {
   title: string;
@@ -126,4 +127,76 @@ export function getAllPageSlugs(): string[] {
   return fileNames
     .filter((fileName) => fileName.endsWith(".mdx"))
     .map((fileName) => fileName.replace(/\.mdx$/, ""));
+}
+
+// Now entries
+export interface NowEntry {
+  date: string;
+  content: string;
+}
+
+export function getAllNowEntries(): NowEntry[] {
+  if (!fs.existsSync(nowDirectory)) {
+    return [];
+  }
+
+  const fileNames = fs.readdirSync(nowDirectory);
+  const entries = fileNames
+    .filter((fileName) => fileName.endsWith(".mdx"))
+    .map((fileName) => {
+      const fullPath = path.join(nowDirectory, fileName);
+      const fileContents = fs.readFileSync(fullPath, "utf8");
+      const { data, content } = matter(fileContents);
+      const dateSlug = fileName.replace(/\.mdx$/, "");
+
+      return {
+        date: data.date || dateSlug,
+        content,
+      };
+    });
+
+  // Sort by date, newest first
+  return entries.sort((a, b) => {
+    return new Date(b.date).getTime() - new Date(a.date).getTime();
+  });
+}
+
+export function getLatestNowEntry(): NowEntry | null {
+  const entries = getAllNowEntries();
+  return entries.length > 0 ? entries[0] : null;
+}
+
+export function getNowEntryByDate(date: string): NowEntry | null {
+  const fullPath = path.join(nowDirectory, `${date}.mdx`);
+
+  if (!fs.existsSync(fullPath)) {
+    return null;
+  }
+
+  const fileContents = fs.readFileSync(fullPath, "utf8");
+  const { data, content } = matter(fileContents);
+
+  return {
+    date: data.date || date,
+    content,
+  };
+}
+
+/**
+ * Extract bullet points from MDX content
+ * Returns an array of bullet point text (without the leading - or *)
+ */
+export function extractBulletPoints(content: string): string[] {
+  const lines = content.split("\n");
+  const bullets: string[] = [];
+
+  for (const line of lines) {
+    const match = line.match(/^[-*]\s+(.+)/);
+    if (match) {
+      // Get the first line of the bullet (in case it spans multiple lines)
+      bullets.push(match[1].trim());
+    }
+  }
+
+  return bullets;
 }
