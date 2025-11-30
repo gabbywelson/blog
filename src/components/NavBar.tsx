@@ -40,7 +40,9 @@ export function NavBar() {
     <header
       className={cn(
         "fixed top-4 left-1/2 z-50",
-        !isRetro && "animate-float"
+        !isRetro && "animate-float",
+        // In retro mode, we need to handle centering manually since animate-float is disabled
+        isRetro && "-translate-x-1/2"
       )}
     >
       <nav
@@ -58,6 +60,14 @@ export function NavBar() {
             "border-b-[#000033] border-r-[#000033]",
             "shadow-[4px_4px_0px_#000000]",
             "backdrop-blur-none",
+            // Mobile: smaller padding and text to fit on screen
+            "max-w-[95vw]",
+            "px-1",
+            "gap-0.5",
+            // Desktop: restore normal sizing
+            "md:max-w-none",
+            "md:px-2",
+            "md:gap-1",
           ]
         )}
       >
@@ -93,6 +103,10 @@ export function NavBar() {
                 isRetro && [
                   "rounded-none",
                   "border-2",
+                  // Mobile: smaller padding and text
+                  "px-2 py-1 text-xs",
+                  // Desktop: restore normal sizing
+                  "md:px-4 md:py-2 md:text-sm",
                   isActive
                     ? [
                         "bg-[#ff00ff]",
