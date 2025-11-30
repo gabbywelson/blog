@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { ArrowLeft, Calendar, Tag } from "lucide-react";
 import { components } from "@/components/MDXComponents";
+import { mdxOptions } from "@/lib/mdx-options";
 
 interface PostPageProps {
   params: Promise<{ slug: string }>;
@@ -115,7 +116,7 @@ export default async function PostPage({ params }: PostPageProps) {
           "prose-hr:border-border"
         )}
       >
-        <MDXRemote source={post.content} components={components} />
+        <MDXRemote source={post.content} components={components} options={{ mdxOptions }} />
       </div>
 
       {/* Footer */}

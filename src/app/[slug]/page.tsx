@@ -3,6 +3,7 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import { getPageBySlug, getAllPageSlugs } from "@/lib/mdx";
 import { cn } from "@/lib/utils";
 import { components } from "@/components/MDXComponents";
+import { mdxOptions } from "@/lib/mdx-options";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -68,9 +69,12 @@ export default async function Page({ params }: PageProps) {
           "prose-img:rounded-lg"
         )}
       >
-        <MDXRemote source={page.content} components={components} />
+        <MDXRemote
+          source={page.content}
+          components={components}
+          options={{ mdxOptions }}
+        />
       </div>
     </article>
   );
 }
-
