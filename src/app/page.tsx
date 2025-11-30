@@ -13,12 +13,12 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="mb-16 text-center">
         <h1 className="font-serif text-5xl md:text-7xl font-bold tracking-tight mb-6">
-          <span className="text-primary">Digital</span>{" "}
+          <span className="text-primary">Gabby&apos;s</span>{" "}
           <span className="text-secondary">Garden</span>
         </h1>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-          A soft corner of the internet where ideas bloom, evolve, and
-          occasionally wither. Welcome to my garden.
+          My own little corner of the internet to share thoughts, link to my
+          work, and let folks know what I'm up to.
         </p>
       </section>
 
@@ -79,8 +79,9 @@ export default function HomePage() {
             <h2 className="font-serif text-2xl font-semibold">About</h2>
           </div>
           <p className="text-muted-foreground mb-6">
-            Senior full-stack engineer who believes great software is grown, not
-            built. I craft experiences at the intersection of code and design.
+            I&apos;m an east coast gal living in SF with my partner and our two
+            cats. I like to write good code, cook good food, and spend time
+            exploring my beautiful city.
           </p>
           <Link
             href="/about"

@@ -61,7 +61,7 @@ export function Footer() {
         {/* Copyright */}
         <div className="mt-8 pt-6 border-t border-border">
           <p className="text-center text-sm text-muted-foreground">
-            &copy; {currentYear} Digital Garden. Crafted with care.
+            &copy; {currentYear} Gabby Welson. Made with 💜 in San Francisco.
           </p>
         </div>
       </div>
