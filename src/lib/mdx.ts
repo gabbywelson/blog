@@ -11,6 +11,7 @@ export interface PostMeta {
   tags: string[];
   slug: string;
   excerpt: string;
+  image?: string;
 }
 
 export interface Post extends PostMeta {
@@ -37,6 +38,7 @@ export function getAllPosts(): PostMeta[] {
         date: data.date || new Date().toISOString(),
         tags: data.tags || [],
         excerpt: data.excerpt || "",
+        image: data.image,
       };
     });
 
@@ -62,6 +64,7 @@ export function getPostBySlug(slug: string): Post | null {
     date: data.date || new Date().toISOString(),
     tags: data.tags || [],
     excerpt: data.excerpt || "",
+    image: data.image,
     content,
   };
 }

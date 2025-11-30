@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { getPostBySlug, getAllPostSlugs } from "@/lib/mdx";
 import { cn } from "@/lib/utils";
@@ -80,6 +81,20 @@ export default async function PostPage({ params }: PostPageProps) {
           )}
         </div>
       </header>
+
+      {/* Hero Image */}
+      {post.image && (
+        <div className="relative w-full aspect-[2/1] mb-12 rounded-xl overflow-hidden">
+          <Image
+            src={post.image}
+            alt={post.title}
+            fill
+            className="object-cover"
+            priority
+            sizes="(max-width: 768px) 100vw, 768px"
+          />
+        </div>
+      )}
 
       {/* Content */}
       <div

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { getAllPosts } from "@/lib/mdx";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
@@ -38,41 +39,60 @@ export default function PostsPage() {
             <article
               key={post.slug}
               className={cn(
-                "group bg-card border border-border rounded-lg p-6",
+                "group bg-card border border-border rounded-lg overflow-hidden",
                 "transition-all duration-300",
                 "hover:shadow-xl hover:shadow-primary/5",
                 "hover:border-primary/30"
               )}
             >
-              <Link href={`/posts/${post.slug}`} className="block">
-                <h2 className="font-serif text-2xl font-semibold mb-3 group-hover:text-primary transition-colors">
-                  {post.title}
-                </h2>
-                {post.excerpt && (
-                  <p className="text-muted-foreground mb-4 line-clamp-2">
-                    {post.excerpt}
-                  </p>
+              <Link
+                href={`/posts/${post.slug}`}
+                className={cn(
+                  "block",
+                  post.image && "md:flex md:items-stretch"
                 )}
-                <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-                  <div className="flex items-center gap-2">
-                    <Calendar className="w-4 h-4" />
-                    <time>{format(new Date(post.date), "MMMM d, yyyy")}</time>
+              >
+                {post.image && (
+                  <div className="relative w-full md:w-72 lg:w-80 shrink-0 aspect-[16/9] md:aspect-auto">
+                    <Image
+                      src={post.image}
+                      alt={post.title}
+                      fill
+                      className="object-cover transition-transform duration-300 group-hover:scale-105"
+                      sizes="(max-width: 768px) 100vw, 320px"
+                    />
                   </div>
-                  {post.tags.length > 0 && (
-                    <div className="flex items-center gap-2">
-                      <Tag className="w-4 h-4" />
-                      <div className="flex gap-2">
-                        {post.tags.map((tag) => (
-                          <span
-                            key={tag}
-                            className="px-2 py-0.5 rounded-full bg-muted text-muted-foreground"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
+                )}
+                <div className="p-6 flex flex-col justify-center">
+                  <h2 className="font-serif text-2xl font-semibold mb-3 group-hover:text-primary transition-colors">
+                    {post.title}
+                  </h2>
+                  {post.excerpt && (
+                    <p className="text-muted-foreground mb-4 line-clamp-2">
+                      {post.excerpt}
+                    </p>
                   )}
+                  <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-2">
+                      <Calendar className="w-4 h-4" />
+                      <time>{format(new Date(post.date), "MMMM d, yyyy")}</time>
+                    </div>
+                    {post.tags.length > 0 && (
+                      <div className="flex items-center gap-2">
+                        <Tag className="w-4 h-4" />
+                        <div className="flex gap-2">
+                          {post.tags.map((tag) => (
+                            <span
+                              key={tag}
+                              className="px-2 py-0.5 rounded-full bg-muted text-muted-foreground"
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </Link>
             </article>
