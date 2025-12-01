@@ -6,6 +6,10 @@ import Link from "next/link";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
+// Obfuscated email parts to prevent scraping
+const emailParts = ["hello", "welson", "net"];
+const getEmail = () => `${emailParts[0]}@${emailParts[1]}.${emailParts[2]}`;
+
 const socialLinks = [
   {
     href: "https://github.com/gabbywelson",
@@ -46,10 +50,12 @@ const socialLinks = [
     customIcon: true,
   },
   {
-    href: "mailto:hello@welson.net",
+    // Email link is handled specially - href assembled on click
+    href: "#email",
     icon: <Image src="/icons/email.svg" alt="Email" width={20} height={20} />,
     label: "Email me",
     customIcon: true,
+    isEmail: true,
   },
 ];
 
@@ -114,12 +120,20 @@ export function Footer() {
           <div className="flex items-center gap-4">
             {socialLinks.map((link) => {
               const Icon = link.icon;
+              const handleClick = link.isEmail
+                ? (e: React.MouseEvent) => {
+                    e.preventDefault();
+                    window.location.href = `mailto:${getEmail()}`;
+                  }
+                : undefined;
+
               return (
                 <a
                   key={link.label}
                   href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  onClick={handleClick}
+                  target={link.isEmail ? undefined : "_blank"}
+                  rel={link.isEmail ? undefined : "noopener noreferrer"}
                   className={cn(
                     "p-2 rounded-lg transition-all duration-200",
                     "text-muted-foreground hover:text-foreground",
