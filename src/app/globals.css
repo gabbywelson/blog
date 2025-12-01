@@ -286,6 +286,53 @@ body {
 }
 
 /* ========================================
+   ANIMATIONS DISABLED STATE
+   When user prefers reduced motion or toggles animations off
+   ======================================== */
+
+.animations-disabled .animate-float,
+.animations-disabled .retro-marquee,
+.animations-disabled .retro-blink,
+.animations-disabled .retro-sparkle,
+.animations-disabled .retro-rainbow,
+.animations-disabled .week-current {
+  animation: none !important;
+}
+
+/* Keep nav centered when float animation is disabled */
+.animations-disabled .animate-float {
+  transform: translateX(-50%) !important;
+}
+
+/* Disable transition animations on timeline items */
+.animations-disabled [data-index] {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+/* Disable hover transitions but keep hover states */
+.animations-disabled .week-cell {
+  transition: none !important;
+}
+
+/* Respect prefers-reduced-motion at system level too */
+@media (prefers-reduced-motion: reduce) {
+  .animate-float,
+  .retro-marquee,
+  .retro-blink,
+  .retro-sparkle,
+  .retro-rainbow,
+  .week-current {
+    animation: none !important;
+  }
+  
+  .animate-float {
+    transform: translateX(-50%) !important;
+  }
+}
+
+/* ========================================
    WEEKS VISUALIZATION STYLES
    ======================================== */
 

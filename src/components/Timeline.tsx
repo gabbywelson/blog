@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { ArrowRight } from "lucide-react";
+import { usePreferencesSafe } from "@/lib/usePreferences";
 
 export interface TimelineEntry {
   yearStart: string;
@@ -18,6 +19,8 @@ export function Timeline({ entries }: TimelineProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [lineHeight, setLineHeight] = useState(0);
   const [visibleItems, setVisibleItems] = useState<Set<number>>(new Set());
+  const preferences = usePreferencesSafe();
+  const animationsEnabled = preferences?.animationsEnabled ?? true;
 
   // Handle scroll-based line drawing
   useEffect(() => {

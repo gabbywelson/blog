@@ -7,6 +7,7 @@ import {
   Bungee,
 } from "next/font/google";
 import { ThemeProvider } from "next-themes";
+import { PreferencesProvider } from "@/lib/usePreferences";
 import { NavBar } from "@/components/NavBar";
 import { Footer } from "@/components/Footer";
 import { CursorSparkles } from "@/components/CursorSparkles";
@@ -61,10 +62,12 @@ export default function RootLayout({
           enableSystem={false}
           themes={["light", "dark", "retro"]}
         >
-          <CursorSparkles />
-          <NavBar />
-          <main className="flex-1 pt-24">{children}</main>
-          <Footer />
+          <PreferencesProvider>
+            <CursorSparkles />
+            <NavBar />
+            <main className="flex-1 pt-24">{children}</main>
+            <Footer />
+          </PreferencesProvider>
         </ThemeProvider>
       </body>
     </html>

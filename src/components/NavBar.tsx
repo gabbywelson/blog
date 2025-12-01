@@ -2,11 +2,10 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useTheme } from "next-themes";
 import { ThemeToggle } from "./ThemeToggle";
 import { cn } from "@/lib/utils";
-import { useEffect, useState } from "react";
 import posthog from "posthog-js";
+import { usePreferences } from "@/lib/usePreferences";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -27,22 +26,17 @@ const retroNavLabels: Record<string, string> = {
 
 export function NavBar() {
   const pathname = usePathname();
-  const { resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
+  const { isRetro, mounted, animationsEnabled } = usePreferences();
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  const isRetro = mounted && resolvedTheme === "retro";
+  const shouldAnimate = mounted && animationsEnabled && !isRetro;
 
   return (
     <header
       className={cn(
         "fixed top-4 left-1/2 z-50",
-        !isRetro && "animate-float",
-        // In retro mode, we need to handle centering manually since animate-float is disabled
-        isRetro && "-translate-x-1/2"
+        shouldAnimate && "animate-float",
+        // When not animating, we need to handle centering manually
+        !shouldAnimate && "-translate-x-1/2"
       )}
     >
       <nav
