@@ -119,7 +119,6 @@ export function Footer() {
           {/* Social Links */}
           <div className="flex items-center gap-4">
             {socialLinks.map((link) => {
-              const Icon = link.icon;
               const handleClick = link.isEmail
                 ? (e: React.MouseEvent) => {
                     e.preventDefault();
@@ -149,7 +148,7 @@ export function Footer() {
                   )}
                   aria-label={link.label}
                 >
-                  {link.customIcon ? link.icon : <Icon className="w-5 h-5" />}
+                  {link.icon}
                 </a>
               );
             })}
