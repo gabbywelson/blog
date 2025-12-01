@@ -5,6 +5,11 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 // Obfuscated email parts to prevent scraping
 const emailParts = ["hello", "welson", "net"];
@@ -15,6 +20,7 @@ const socialLinks = [
     href: "https://github.com/gabbywelson",
     icon: <Image src="/icons/github.svg" alt="GitHub" width={20} height={20} />,
     label: "GitHub",
+    tooltip: "Follow me on GitHub",
     customIcon: true,
   },
   {
@@ -23,6 +29,7 @@ const socialLinks = [
       <Image src="/icons/twitter.svg" alt="Twitter" width={20} height={20} />
     ),
     label: "Twitter",
+    tooltip: "Follow me on Twitter",
     customIcon: true,
   },
   {
@@ -31,6 +38,7 @@ const socialLinks = [
       <Image src="/icons/linkedin.svg" alt="Linkedin" width={20} height={20} />
     ),
     label: "Linkedin",
+    tooltip: "Connect on LinkedIn",
     customIcon: true,
   },
   {
@@ -39,6 +47,7 @@ const socialLinks = [
       <Image src="/icons/mastodon.svg" alt="Mastodon" width={20} height={20} />
     ),
     label: "Mastodon",
+    tooltip: "Follow me on Mastodon",
     customIcon: true,
   },
   {
@@ -47,6 +56,14 @@ const socialLinks = [
       <Image src="/icons/bluesky.svg" alt="Bluesky" width={20} height={20} />
     ),
     label: "Bluesky",
+    tooltip: "Follow me on Bluesky",
+    customIcon: true,
+  },
+  {
+    href: "/feed.xml",
+    icon: <Image src="/icons/rss-fill.svg" alt="RSS" width={20} height={20} />,
+    label: "RSS Feed",
+    tooltip: "Subscribe via RSS",
     customIcon: true,
   },
   {
@@ -54,6 +71,7 @@ const socialLinks = [
     href: "#email",
     icon: <Image src="/icons/email.svg" alt="Email" width={20} height={20} />,
     label: "Email me",
+    tooltip: "Send me an email",
     customIcon: true,
     isEmail: true,
   },
@@ -126,30 +144,39 @@ export function Footer() {
                   }
                 : undefined;
 
+              // RSS feed is internal, not external
+              const isExternal = !link.isEmail && link.href !== "/feed.xml";
+
               return (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  onClick={handleClick}
-                  target={link.isEmail ? undefined : "_blank"}
-                  rel={link.isEmail ? undefined : "noopener noreferrer"}
-                  className={cn(
-                    "p-2 rounded-lg transition-all duration-200",
-                    "text-muted-foreground hover:text-foreground",
-                    "hover:bg-muted",
-                    isRetro && [
-                      "rounded-none",
-                      "border-2",
-                      "border-[#00ffff]",
-                      "text-[#00ff00]",
-                      "hover:bg-[#000066]",
-                      "hover:text-[#ffff00]",
-                    ]
-                  )}
-                  aria-label={link.label}
-                >
-                  {link.icon}
-                </a>
+                <Tooltip key={link.label}>
+                  <TooltipTrigger asChild>
+                    <a
+                      href={link.href}
+                      onClick={handleClick}
+                      target={isExternal ? "_blank" : undefined}
+                      rel={isExternal ? "noopener noreferrer" : undefined}
+                      className={cn(
+                        "p-2 rounded-lg transition-all duration-200",
+                        "text-muted-foreground hover:text-foreground",
+                        "hover:bg-muted",
+                        isRetro && [
+                          "rounded-none",
+                          "border-2",
+                          "border-[#00ffff]",
+                          "text-[#00ff00]",
+                          "hover:bg-[#000066]",
+                          "hover:text-[#ffff00]",
+                        ]
+                      )}
+                      aria-label={link.label}
+                    >
+                      {link.icon}
+                    </a>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{link.tooltip}</p>
+                  </TooltipContent>
+                </Tooltip>
               );
             })}
           </div>
