@@ -1,5 +1,10 @@
 import type { MetadataRoute } from "next";
-import { getAllPosts, getAllPageSlugs, getAllNotes, getAllNowEntries } from "@/lib/mdx";
+import {
+  getAllPosts,
+  getAllPageSlugs,
+  getAllNotes,
+  getAllNowEntries,
+} from "@/lib/mdx";
 
 const SITE_URL = process.env.SITE_URL || "https://gabbybloom.com";
 
@@ -75,6 +80,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.5,
   }));
 
-  return [...staticPages, ...dynamicPages, ...postPages, ...notePages, ...nowPages];
+  return [
+    ...staticPages,
+    ...dynamicPages,
+    ...postPages,
+    ...notePages,
+    ...nowPages,
+  ];
 }
-

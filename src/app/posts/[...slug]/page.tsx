@@ -9,6 +9,7 @@ import { ArrowLeft, Calendar, Tag } from "lucide-react";
 import { components } from "@/components/MDXComponents";
 import { mdxOptions } from "@/lib/mdx-options";
 import { getPostHogClient } from "@/lib/posthog-server";
+import { PlaceholderHero } from "@/components/PlaceholderHero";
 
 interface PostPageProps {
   params: Promise<{ slug: string[] }>;
@@ -28,9 +29,33 @@ export async function generateMetadata({ params }: PostPageProps) {
     return { title: "Post Not Found" };
   }
 
+  // Use custom image if provided, otherwise use dynamic OG image
+  const ogImage = post.image
+    ? post.image
+    : `/api/og?title=${encodeURIComponent(post.title)}`;
+
   return {
     title: `${post.title} | Gabby's Garden`,
     description: post.excerpt,
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      type: "article",
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.excerpt,
+      images: [ogImage],
+    },
   };
 }
 
@@ -101,7 +126,7 @@ export default async function PostPage({ params }: PostPageProps) {
       </header>
 
       {/* Hero Image */}
-      {post.image && (
+      {post.image ? (
         <div className="relative w-full aspect-[2/1] mb-12 rounded-xl overflow-hidden">
           <Image
             src={post.image}
@@ -111,6 +136,10 @@ export default async function PostPage({ params }: PostPageProps) {
             priority
             sizes="(max-width: 768px) 100vw, 768px"
           />
+        </div>
+      ) : (
+        <div className="mb-12">
+          <PlaceholderHero title={post.title} />
         </div>
       )}
 

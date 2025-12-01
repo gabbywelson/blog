@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { Calendar, Tag, X } from "lucide-react";
 import { TagFilter } from "@/components/TagFilter";
+import { PlaceholderThumb } from "@/components/PlaceholderHero";
 
 export const metadata = {
   title: "Posts | Digital Garden",
@@ -112,13 +113,10 @@ export default async function PostsPage({ searchParams }: PostsPageProps) {
             >
               <Link
                 href={`/posts/${post.slug}`}
-                className={cn(
-                  "block",
-                  post.image && "md:flex md:items-stretch"
-                )}
+                className="block md:flex md:items-stretch"
               >
-                {post.image && (
-                  <div className="relative w-full md:w-72 lg:w-80 shrink-0 aspect-[16/9] md:aspect-auto">
+                <div className="relative w-full md:w-72 lg:w-80 shrink-0 aspect-[16/9] md:aspect-auto overflow-hidden">
+                  {post.image ? (
                     <Image
                       src={post.image}
                       alt={post.title}
@@ -126,8 +124,12 @@ export default async function PostsPage({ searchParams }: PostsPageProps) {
                       className="object-cover transition-transform duration-300 group-hover:scale-105"
                       sizes="(max-width: 768px) 100vw, 320px"
                     />
-                  </div>
-                )}
+                  ) : (
+                    <div className="absolute inset-0 transition-transform duration-300 group-hover:scale-105">
+                      <PlaceholderThumb />
+                    </div>
+                  )}
+                </div>
                 <div className="p-6 flex flex-col justify-center">
                   <h2 className="font-serif text-2xl font-semibold mb-3 group-hover:text-primary transition-colors">
                     {post.title}
