@@ -1,25 +1,56 @@
 "use client";
 
-import { Github, Twitter, Linkedin, Newspaper, Mail } from "lucide-react";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
 const socialLinks = [
-  { href: "https://github.com/gabbywelson", icon: Github, label: "GitHub" },
-  { href: "https://twitter.com/gabbywelson", icon: Twitter, label: "Twitter" },
+  {
+    href: "https://github.com/gabbywelson",
+    icon: <Image src="/icons/github.svg" alt="GitHub" width={20} height={20} />,
+    label: "GitHub",
+    customIcon: true,
+  },
+  {
+    href: "https://twitter.com/gabbywelson",
+    icon: (
+      <Image src="/icons/twitter.svg" alt="Twitter" width={20} height={20} />
+    ),
+    label: "Twitter",
+    customIcon: true,
+  },
   {
     href: "https://linkedin.com/in/gabbywelson",
-    icon: Linkedin,
+    icon: (
+      <Image src="/icons/linkedin.svg" alt="Linkedin" width={20} height={20} />
+    ),
     label: "Linkedin",
+    customIcon: true,
   },
   {
     href: "https://tacobelllabs.net/@gabby",
-    icon: Newspaper,
+    icon: (
+      <Image src="/icons/mastodon.svg" alt="Mastodon" width={20} height={20} />
+    ),
     label: "Mastodon",
+    customIcon: true,
   },
-  { href: "mailto:hello@welson.net", icon: Mail, label: "Email me" },
+  {
+    href: "https://bsky.app/profile/gabby.gay",
+    icon: (
+      <Image src="/icons/bluesky.svg" alt="Bluesky" width={20} height={20} />
+    ),
+    label: "Bluesky",
+    customIcon: true,
+  },
+  {
+    href: "mailto:hello@welson.net",
+    icon: <Image src="/icons/email.svg" alt="Email" width={20} height={20} />,
+    label: "Email me",
+    customIcon: true,
+  },
 ];
 
 export function Footer() {
@@ -34,16 +65,19 @@ export function Footer() {
   const isRetro = mounted && resolvedTheme === "retro";
 
   return (
-    <footer className={cn("border-t border-border mt-16", isRetro && "border-t-4")}>
+    <footer
+      className={cn("border-t border-border mt-16", isRetro && "border-t-4")}
+    >
       <div className="max-w-4xl mx-auto px-6 py-12">
         {/* Retro marquee banner */}
         {isRetro && (
           <div className="mb-8 overflow-hidden border-2 border-[#ff00ff] bg-[#000033] py-2">
             <div className="retro-marquee whitespace-nowrap text-[#00ffff]">
-              ★ Thanks for visiting my page! ★ Don&apos;t forget to sign my guestbook! ★ 
-              You are visitor #{Math.floor(Math.random() * 9000) + 1000} ★ 
-              Come back soon! ★ Add me to your bookmarks! ★ 
-              Thanks for visiting my page! ★ Don&apos;t forget to sign my guestbook! ★
+              ★ Thanks for visiting my page! ★ Don&apos;t forget to sign my
+              guestbook! ★ You are visitor #
+              {Math.floor(Math.random() * 9000) + 1000} ★ Come back soon! ★ Add
+              me to your bookmarks! ★ Thanks for visiting my page! ★ Don&apos;t
+              forget to sign my guestbook! ★
             </div>
           </div>
         )}
@@ -101,7 +135,7 @@ export function Footer() {
                   )}
                   aria-label={link.label}
                 >
-                  <Icon className="w-5 h-5" />
+                  {link.customIcon ? link.icon : <Icon className="w-5 h-5" />}
                 </a>
               );
             })}
@@ -109,7 +143,12 @@ export function Footer() {
         </div>
 
         {/* Copyright */}
-        <div className={cn("mt-8 pt-6 border-t border-border", isRetro && "border-t-2")}>
+        <div
+          className={cn(
+            "mt-8 pt-6 border-t border-border",
+            isRetro && "border-t-2"
+          )}
+        >
           {isRetro ? (
             <div className="text-center space-y-4">
               <p className="text-sm text-[#ffff00]">
