@@ -84,8 +84,6 @@ export async function renameFile(sourceUrl: string, newPathname: string) {
       blob: {
         url: result.url,
         pathname: result.pathname,
-        size: result.size,
-        uploadedAt: result.uploadedAt,
       },
     };
   } catch (error) {
