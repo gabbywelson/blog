@@ -1,10 +1,11 @@
 "use server";
 
-import { put, del, list } from "@vercel/blob";
+import { put, del, list, copy } from "@vercel/blob";
 import { revalidatePath } from "next/cache";
 
 export async function uploadFile(formData: FormData) {
   const file = formData.get("file") as File;
+  const folder = formData.get("folder") as string | null;
 
   if (!file) {
     return { error: "No file provided" };
@@ -22,7 +23,10 @@ export async function uploadFile(formData: FormData) {
   }
 
   try {
-    const result = await put(file.name, file, {
+    // Build pathname with optional folder prefix
+    const pathname = folder ? `${folder}/${file.name}` : file.name;
+
+    const result = await put(pathname, file, {
       access: "public",
     });
 
@@ -55,12 +59,46 @@ export async function deleteFile(url: string) {
   }
 }
 
-export async function listFiles() {
+export async function listFiles(prefix?: string) {
   try {
-    const { blobs } = await list();
+    const { blobs } = await list(prefix ? { prefix } : undefined);
     return { success: true, blobs };
   } catch (error) {
     console.error("List error:", error);
     return { error: "Failed to list files", blobs: [] };
   }
+}
+
+export async function renameFile(sourceUrl: string, newPathname: string) {
+  try {
+    // Copy to new path
+    const result = await copy(sourceUrl, newPathname, { access: "public" });
+
+    // Delete original
+    await del(sourceUrl);
+
+    revalidatePath("/admin");
+
+    return {
+      success: true,
+      blob: {
+        url: result.url,
+        pathname: result.pathname,
+        size: result.size,
+        uploadedAt: result.uploadedAt,
+      },
+    };
+  } catch (error) {
+    console.error("Rename error:", error);
+    return { error: "Failed to rename file" };
+  }
+}
+
+export async function moveToFolder(
+  sourceUrl: string,
+  folderPath: string,
+  filename: string
+) {
+  const newPathname = folderPath ? `${folderPath}/${filename}` : filename;
+  return renameFile(sourceUrl, newPathname);
 }

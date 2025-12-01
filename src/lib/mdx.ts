@@ -229,6 +229,7 @@ export interface NoteMeta {
 
 export interface Note extends NoteMeta {
   content: string;
+  image?: string;
 }
 
 export function getAllNotes(): NoteMeta[] {
@@ -270,6 +271,7 @@ export function getNoteBySlug(slug: string): Note | null {
     slug,
     title: data.title || "Untitled",
     excerpt: data.excerpt || "",
+    image: data.image,
     content,
   };
 }

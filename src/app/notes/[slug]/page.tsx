@@ -7,6 +7,7 @@ import { ArrowLeft } from "lucide-react";
 import { components } from "@/components/MDXComponents";
 import { mdxOptions } from "@/lib/mdx-options";
 import { getPostHogClient } from "@/lib/posthog-server";
+import Image from "next/image";
 
 interface NotePageProps {
   params: Promise<{ slug: string }>;
@@ -72,6 +73,20 @@ export default async function NotePage({ params }: NotePageProps) {
         </h1>
       </header>
 
+      {/* Hero Image */}
+      {note.image && (
+        <div className="relative w-full aspect-[2/1] mb-12 rounded-xl overflow-hidden">
+          <Image
+            src={note.image}
+            alt={note.title}
+            fill
+            className="object-cover"
+            priority
+            sizes="(max-width: 768px) 100vw, 768px"
+          />
+        </div>
+      )}
+
       {/* Content */}
       <div
         className={cn(
@@ -119,4 +134,3 @@ export default async function NotePage({ params }: NotePageProps) {
     </article>
   );
 }
-
