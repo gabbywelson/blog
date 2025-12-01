@@ -18,3 +18,4 @@ export default async function AdminPage() {
 
   return <AdminDashboard initialBlobs={blobs} />;
 }
+

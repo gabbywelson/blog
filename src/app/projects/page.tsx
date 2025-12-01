@@ -52,19 +52,18 @@ const projects: Project[] = [
     githubUrl:
       "https://github.com/gabbywelson/blog/blob/main/src/app/micro/page.tsx",
     isInternal: true,
-    tags: ["Social", "Next.js", "Vercel Blob"],
+    tags: ["Social", "Val.town", "Backend"],
     image: "https://m2odgjcmaljdcanu.public.blob.vercel-storage.com/micro.png",
   },
   {
     title: "Chris Zombik Portfolio",
     description:
-      "A portfolio and author website I designed and built for my friend Chris Zombik, a writer and creative. Clean, minimal design focused on showcasing his work and making it easy for visitors to learn about him.",
+      "A portfolio and author website I designed and built for my friend Chris Zombik, a writer and creative. Clean, minimal design focused on showcasing his work and making it easy for visitors to learn about him. Built using Next.js, Payload CMS, and Neon DB",
     // Add image: "/projects/chriszombik.png" when screenshot is ready
     liveUrl: "https://chriszombik.com",
-    githubUrl: "https://github.com/gabbywelson/chriszombik",
+    githubUrl: "https://github.com/gabbywelson/chris_zombik_blog",
     tags: ["Portfolio", "Next.js", "Design"],
-    image:
-      "https://m2odgjcmaljdcanu.public.blob.vercel-storage.com/chriszombik.png",
+    image: "https://m2odgjcmaljdcanu.public.blob.vercel-storage.com/zombik.jpg",
   },
 ];
 
