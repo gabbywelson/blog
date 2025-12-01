@@ -1,62 +1,62 @@
 [
-  {
-    "event": "admin_login_success",
-    "description": "Admin successfully logged in to the hidden garden",
-    "file": "src/app/actions/auth.ts"
-  },
-  {
-    "event": "admin_login_failed",
-    "description": "Failed login attempt to admin area",
-    "file": "src/app/login/page.tsx"
-  },
-  {
-    "event": "admin_logout",
-    "description": "Admin logged out of the hidden garden",
-    "file": "src/app/actions/auth.ts"
-  },
-  {
-    "event": "image_uploaded",
-    "description": "Image successfully uploaded to Vercel Blob storage",
-    "file": "src/app/admin/AdminDashboard.tsx"
-  },
-  {
-    "event": "image_upload_failed",
-    "description": "Image upload to Vercel Blob storage failed",
-    "file": "src/app/admin/AdminDashboard.tsx"
-  },
-  {
-    "event": "image_deleted",
-    "description": "Image deleted from gallery",
-    "file": "src/app/admin/AdminDashboard.tsx"
-  },
-  {
-    "event": "image_markdown_copied",
-    "description": "Copied image markdown snippet to clipboard",
-    "file": "src/app/admin/AdminDashboard.tsx"
-  },
-  {
-    "event": "theme_changed",
-    "description": "User changed the theme (light/dark/retro)",
-    "file": "src/components/ThemeToggle.tsx"
-  },
-  {
-    "event": "post_viewed",
-    "description": "User viewed a blog post (top of conversion funnel)",
-    "file": "src/app/posts/[...slug]/page.tsx"
-  },
-  {
-    "event": "note_viewed",
-    "description": "User viewed an evergreen note (top of conversion funnel)",
-    "file": "src/app/notes/[slug]/page.tsx"
-  },
-  {
-    "event": "tag_filtered",
-    "description": "User filtered posts by a specific tag",
-    "file": "src/app/posts/page.tsx"
-  },
-  {
-    "event": "navigation_clicked",
-    "description": "User clicked a navigation link",
-    "file": "src/components/NavBar.tsx"
-  }
+	{
+		"event": "admin_login_success",
+		"description": "Admin successfully logged in to the hidden garden",
+		"file": "src/app/actions/auth.ts"
+	},
+	{
+		"event": "admin_login_failed",
+		"description": "Failed login attempt to admin area",
+		"file": "src/app/login/page.tsx"
+	},
+	{
+		"event": "admin_logout",
+		"description": "Admin logged out of the hidden garden",
+		"file": "src/app/actions/auth.ts"
+	},
+	{
+		"event": "image_uploaded",
+		"description": "Image successfully uploaded to Vercel Blob storage",
+		"file": "src/app/admin/AdminDashboard.tsx"
+	},
+	{
+		"event": "image_upload_failed",
+		"description": "Image upload to Vercel Blob storage failed",
+		"file": "src/app/admin/AdminDashboard.tsx"
+	},
+	{
+		"event": "image_deleted",
+		"description": "Image deleted from gallery",
+		"file": "src/app/admin/AdminDashboard.tsx"
+	},
+	{
+		"event": "image_markdown_copied",
+		"description": "Copied image markdown snippet to clipboard",
+		"file": "src/app/admin/AdminDashboard.tsx"
+	},
+	{
+		"event": "theme_changed",
+		"description": "User changed the theme (light/dark/retro)",
+		"file": "src/components/ThemeToggle.tsx"
+	},
+	{
+		"event": "post_viewed",
+		"description": "User viewed a blog post (top of conversion funnel)",
+		"file": "src/app/posts/[...slug]/page.tsx"
+	},
+	{
+		"event": "note_viewed",
+		"description": "User viewed an evergreen note (top of conversion funnel)",
+		"file": "src/app/notes/[slug]/page.tsx"
+	},
+	{
+		"event": "tag_filtered",
+		"description": "User filtered posts by a specific tag",
+		"file": "src/app/posts/page.tsx"
+	},
+	{
+		"event": "navigation_clicked",
+		"description": "User clicked a navigation link",
+		"file": "src/components/NavBar.tsx"
+	}
 ]

@@ -8,129 +8,129 @@ import posthog from "posthog-js";
 import { usePreferences } from "@/lib/usePreferences";
 
 const navLinks = [
-  { href: "/", label: "Home" },
-  { href: "/posts", label: "Posts" },
-  { href: "/projects", label: "Projects" },
-  { href: "/about", label: "About" },
-  { href: "/now", label: "Now" },
+	{ href: "/", label: "Home" },
+	{ href: "/posts", label: "Posts" },
+	{ href: "/projects", label: "Projects" },
+	{ href: "/about", label: "About" },
+	{ href: "/now", label: "Now" },
 ];
 
 // Retro nav labels with some fun alternatives
 const retroNavLabels: Record<string, string> = {
-  "/": "~Home~",
-  "/posts": "Blog",
-  "/projects": "Stuff",
-  "/about": "About Me!",
-  "/now": "Now",
+	"/": "~Home~",
+	"/posts": "Blog",
+	"/projects": "Stuff",
+	"/about": "About Me!",
+	"/now": "Now",
 };
 
 export function NavBar() {
-  const pathname = usePathname();
-  const { isRetro, mounted, animationsEnabled } = usePreferences();
+	const pathname = usePathname();
+	const { isRetro, mounted, animationsEnabled } = usePreferences();
 
-  const shouldAnimate = mounted && animationsEnabled && !isRetro;
+	const shouldAnimate = mounted && animationsEnabled && !isRetro;
 
-  return (
-    <header
-      className={cn(
-        "fixed top-4 left-1/2 z-50",
-        shouldAnimate && "animate-float",
-        // When not animating, we need to handle centering manually
-        !shouldAnimate && "-translate-x-1/2"
-      )}
-    >
-      <nav
-        className={cn(
-          "flex items-center gap-1 px-2 py-2",
-          "bg-card/80 backdrop-blur-md",
-          "border border-border",
-          "rounded-full shadow-lg shadow-foreground/5",
-          // Retro overrides
-          isRetro && [
-            "rounded-none",
-            "bg-[#000066]",
-            "border-4",
-            "border-t-[#6666ff] border-l-[#6666ff]",
-            "border-b-[#000033] border-r-[#000033]",
-            "shadow-[4px_4px_0px_#000000]",
-            "backdrop-blur-none",
-            // Mobile: smaller padding and text to fit on screen
-            "max-w-[95vw]",
-            "px-1",
-            "gap-0.5",
-            // Desktop: restore normal sizing
-            "md:max-w-none",
-            "md:px-2",
-            "md:gap-1",
-          ]
-        )}
-      >
-        {navLinks.map((link) => {
-          const isActive =
-            link.href === "/"
-              ? pathname === "/"
-              : pathname.startsWith(link.href);
+	return (
+		<header
+			className={cn(
+				"fixed top-4 left-1/2 z-50",
+				shouldAnimate && "animate-float",
+				// When not animating, we need to handle centering manually
+				!shouldAnimate && "-translate-x-1/2",
+			)}
+		>
+			<nav
+				className={cn(
+					"flex items-center gap-1 px-2 py-2",
+					"bg-card/80 backdrop-blur-md",
+					"border border-border",
+					"rounded-full shadow-lg shadow-foreground/5",
+					// Retro overrides
+					isRetro && [
+						"rounded-none",
+						"bg-[#000066]",
+						"border-4",
+						"border-t-[#6666ff] border-l-[#6666ff]",
+						"border-b-[#000033] border-r-[#000033]",
+						"shadow-[4px_4px_0px_#000000]",
+						"backdrop-blur-none",
+						// Mobile: smaller padding and text to fit on screen
+						"max-w-[95vw]",
+						"px-1",
+						"gap-0.5",
+						// Desktop: restore normal sizing
+						"md:max-w-none",
+						"md:px-2",
+						"md:gap-1",
+					],
+				)}
+			>
+				{navLinks.map((link) => {
+					const isActive =
+						link.href === "/"
+							? pathname === "/"
+							: pathname.startsWith(link.href);
 
-          const label = isRetro
-            ? retroNavLabels[link.href] || link.label
-            : link.label;
+					const label = isRetro
+						? retroNavLabels[link.href] || link.label
+						: link.label;
 
-          return (
-            <Link
-              key={link.href}
-              href={link.href}
-              onClick={() => {
-                // Track navigation click
-                posthog.capture("navigation_clicked", {
-                  link_label: label,
-                  link_href: link.href,
-                  from_page: pathname,
-                  is_active: isActive,
-                });
-              }}
-              className={cn(
-                "px-4 py-2 rounded-full text-sm font-medium transition-all duration-200",
-                isActive
-                  ? "bg-primary text-primary-foreground"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted",
-                // Retro overrides
-                isRetro && [
-                  "rounded-none",
-                  "border-2",
-                  // Mobile: smaller padding and text
-                  "px-2 py-1 text-xs",
-                  // Desktop: restore normal sizing
-                  "md:px-4 md:py-2 md:text-sm",
-                  isActive
-                    ? [
-                        "bg-[#ff00ff]",
-                        "text-white",
-                        "border-t-[#ff66ff] border-l-[#ff66ff]",
-                        "border-b-[#990099] border-r-[#990099]",
-                      ]
-                    : [
-                        "bg-[#000099]",
-                        "text-[#00ffff]",
-                        "border-t-[#3333cc] border-l-[#3333cc]",
-                        "border-b-[#000033] border-r-[#000033]",
-                        "hover:bg-[#0000cc]",
-                        "hover:text-[#ffff00]",
-                      ],
-                ]
-              )}
-            >
-              {label}
-            </Link>
-          );
-        })}
-        <div
-          className={cn(
-            "w-px h-6 bg-border mx-1",
-            isRetro && "w-[3px] bg-[#ff00ff]"
-          )}
-        />
-        <ThemeToggle />
-      </nav>
-    </header>
-  );
+					return (
+						<Link
+							key={link.href}
+							href={link.href}
+							onClick={() => {
+								// Track navigation click
+								posthog.capture("navigation_clicked", {
+									link_label: label,
+									link_href: link.href,
+									from_page: pathname,
+									is_active: isActive,
+								});
+							}}
+							className={cn(
+								"px-4 py-2 rounded-full text-sm font-medium transition-all duration-200",
+								isActive
+									? "bg-primary text-primary-foreground"
+									: "text-muted-foreground hover:text-foreground hover:bg-muted",
+								// Retro overrides
+								isRetro && [
+									"rounded-none",
+									"border-2",
+									// Mobile: smaller padding and text
+									"px-2 py-1 text-xs",
+									// Desktop: restore normal sizing
+									"md:px-4 md:py-2 md:text-sm",
+									isActive
+										? [
+												"bg-[#ff00ff]",
+												"text-white",
+												"border-t-[#ff66ff] border-l-[#ff66ff]",
+												"border-b-[#990099] border-r-[#990099]",
+											]
+										: [
+												"bg-[#000099]",
+												"text-[#00ffff]",
+												"border-t-[#3333cc] border-l-[#3333cc]",
+												"border-b-[#000033] border-r-[#000033]",
+												"hover:bg-[#0000cc]",
+												"hover:text-[#ffff00]",
+											],
+								],
+							)}
+						>
+							{label}
+						</Link>
+					);
+				})}
+				<div
+					className={cn(
+						"w-px h-6 bg-border mx-1",
+						isRetro && "w-[3px] bg-[#ff00ff]",
+					)}
+				/>
+				<ThemeToggle />
+			</nav>
+		</header>
+	);
 }
