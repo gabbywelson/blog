@@ -5,7 +5,6 @@ import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { Calendar, Tag, X } from "lucide-react";
 import { TagFilter } from "@/components/TagFilter";
-import { PlaceholderThumb } from "@/components/PlaceholderHero";
 
 export const metadata = {
 	title: "Posts | Digital Garden",
@@ -125,9 +124,7 @@ export default async function PostsPage({ searchParams }: PostsPageProps) {
 											sizes="(max-width: 768px) 100vw, 320px"
 										/>
 									) : (
-										<div className="absolute inset-0 transition-transform duration-300 group-hover:scale-105">
-											<PlaceholderThumb />
-										</div>
+										<div className="absolute inset-0 bg-gradient-to-br from-[#b8d4c8] via-[#d4c8e8] to-[#a4c3b2] transition-transform duration-300 group-hover:scale-105" />
 									)}
 								</div>
 								<div className="p-6 flex flex-col justify-center">

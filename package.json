@@ -9,9 +9,12 @@
 		"lint": "eslint"
 	},
 	"dependencies": {
+		"@ai-sdk/google": "^2.0.44",
+		"@ai-sdk/openai": "^2.0.75",
 		"@radix-ui/react-tooltip": "^1.2.8",
 		"@tailwindcss/typography": "^0.5.19",
 		"@vercel/blob": "^2.0.0",
+		"ai": "^5.0.105",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
 		"date-fns": "^4.1.0",

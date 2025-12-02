@@ -9,7 +9,6 @@ import { ArrowLeft, Calendar, Tag } from "lucide-react";
 import { components } from "@/components/MDXComponents";
 import { mdxOptions } from "@/lib/mdx-options";
 import { getPostHogClient } from "@/lib/posthog-server";
-import { PlaceholderHero } from "@/components/PlaceholderHero";
 
 interface PostPageProps {
 	params: Promise<{ slug: string[] }>;
@@ -138,8 +137,12 @@ export default async function PostPage({ params }: PostPageProps) {
 					/>
 				</div>
 			) : (
-				<div className="mb-12">
-					<PlaceholderHero title={post.title} />
+				<div className="relative w-full aspect-[2/1] mb-12 rounded-xl overflow-hidden bg-gradient-to-br from-[#b8d4c8] via-[#d4c8e8] to-[#a4c3b2]">
+					<div className="absolute inset-0 flex items-center justify-center p-12">
+						<h2 className="font-serif text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center text-[#292524]/80 leading-tight max-w-2xl">
+							{post.title}
+						</h2>
+					</div>
 				</div>
 			)}
 

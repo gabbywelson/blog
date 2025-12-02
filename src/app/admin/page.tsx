@@ -1,5 +1,6 @@
 import { list } from "@vercel/blob";
 import { AdminDashboard } from "./AdminDashboard";
+import { getAllPosts } from "@/lib/mdx";
 
 export const metadata = {
 	title: "Admin | Gabby's Garden",
@@ -16,5 +17,7 @@ export default async function AdminPage() {
 		console.error("Failed to list blobs:", error);
 	}
 
-	return <AdminDashboard initialBlobs={blobs} />;
+	const posts = getAllPosts();
+
+	return <AdminDashboard initialBlobs={blobs} posts={posts} />;
 }
