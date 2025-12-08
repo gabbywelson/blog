@@ -162,3 +162,4 @@ export function getDecadeLabel(decade: number): string {
 	if (decade < 2000) return `${decade - 1900}s`;
 	return `${decade}s`;
 }
+

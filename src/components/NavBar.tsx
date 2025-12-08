@@ -11,6 +11,7 @@ const navLinks = [
 	{ href: "/", label: "Home" },
 	{ href: "/posts", label: "Posts" },
 	{ href: "/projects", label: "Projects" },
+	{ href: "/reading", label: "Reading" },
 	{ href: "/about", label: "About" },
 	{ href: "/now", label: "Now" },
 ];
@@ -20,6 +21,7 @@ const retroNavLabels: Record<string, string> = {
 	"/": "~Home~",
 	"/posts": "Blog",
 	"/projects": "Stuff",
+	"/reading": "Reads",
 	"/about": "About Me!",
 	"/now": "Now",
 };

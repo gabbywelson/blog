@@ -90,3 +90,4 @@ export class PostsApiClient {
 		return this.fetchPosts({ source: "microblog", page, limit });
 	}
 }
+

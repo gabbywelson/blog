@@ -12,3 +12,4 @@ declare module "heic-convert" {
 	const convert: ConvertResult;
 	export default convert;
 }
+
