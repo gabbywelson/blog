@@ -33,8 +33,31 @@ interface ReadwiseDocumentPayload {
 }
 
 export async function POST(request: NextRequest) {
+  console.log("[Readwise Webhook] === Incoming POST request ===");
+  console.log("[Readwise Webhook] URL:", request.url);
+  console.log("[Readwise Webhook] Method:", request.method);
+  console.log(
+    "[Readwise Webhook] Headers:",
+    JSON.stringify(Object.fromEntries(request.headers.entries()), null, 2)
+  );
+
+  // Read the raw body first for logging
+  const rawBody = await request.text();
+  console.log("[Readwise Webhook] Raw body length:", rawBody.length);
+  console.log("[Readwise Webhook] Raw body:", rawBody || "(empty)");
+
+  // Handle empty body (likely a test request)
+  if (!rawBody || rawBody.trim() === "") {
+    console.log("[Readwise Webhook] Empty body - likely a test request");
+    return NextResponse.json({ status: "Webhook endpoint is working" });
+  }
+
   try {
-    const payload: ReadwiseDocumentPayload = await request.json();
+    const payload: ReadwiseDocumentPayload = JSON.parse(rawBody);
+    console.log(
+      "[Readwise Webhook] Parsed payload:",
+      JSON.stringify(payload, null, 2)
+    );
 
     // Verify the webhook secret (optional - skip if not configured)
     const expectedSecret = process.env.READWISE_WEBHOOK_SECRET;
