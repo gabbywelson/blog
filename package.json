@@ -10,7 +10,8 @@
     "db:generate": "dotenv -e .env.local -- drizzle-kit generate",
     "db:push": "dotenv -e .env.local -- drizzle-kit push",
     "db:migrate": "dotenv -e .env.local -- drizzle-kit migrate",
-    "db:studio": "dotenv -e .env.local -- drizzle-kit studio"
+    "db:studio": "dotenv -e .env.local -- drizzle-kit studio",
+    "vercel-build": "drizzle-kit push && next build"
   },
   "dependencies": {
     "@ai-sdk/google": "^2.0.44",
